@@ -1,0 +1,29 @@
+{
+	"compilerOptions": {
+		"experimentalDecorators": true,
+		"outDir": "dist",
+		"removeComments": false,
+		"preserveConstEnums": true,
+		"sourceMap": true,
+		"declaration": true,
+		"esModuleInterop": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+    	"strictNullChecks": true,
+		"noUnusedLocals": true,
+		"noImplicitThis": true,
+		"noUnusedParameters": true,
+		"importHelpers": true,
+		"noEmitHelpers": true,
+		"newLine": "lf",
+		"resolveJsonModule": true,
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"pretty": true,
+		"target": "es2017",
+		"allowJs": true,
+		
+
+	},
+
+}
