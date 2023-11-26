@@ -58,7 +58,7 @@ server.listen(port, (_error: any) => {
   .catch((error) => {
     console.error('Unable to connect to the database:', error);
   });
-  const appBaseUrl = '0.0.0.0' + port
+  const appBaseUrl = '127.0.0.1:' + port
   console.log('\x1b[33m%s\x1b[0m', `Server :: Running @ '${appBaseUrl}'`)
 
 })
