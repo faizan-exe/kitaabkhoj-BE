@@ -1,5 +1,5 @@
 require('dotenv').config()
-import { Mineral } from "../Models/"
+import { Book } from "../Models/"
 
 // import {  } from "../Models"
 // import { Category } from "../Models"
@@ -9,6 +9,6 @@ const isTest = process.env.NODE_ENV !== 'test'
 
 const dbInit = () =>
   Promise.all([
-    Mineral.sync({ alter: isDev || isTest }),
+    Book.sync({ alter: isDev || isTest }),
   ])
 export default dbInit

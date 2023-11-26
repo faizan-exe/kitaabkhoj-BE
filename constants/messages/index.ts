@@ -4,11 +4,11 @@ export const message = {
       get: 'Data fetched',
       update: 'Data updated',
       delete: 'Data deleted',
-      mineral: {
-        insert: 'Mineral created successfully',
-        get: 'Mineral fetched successfuly ',
-        update: 'Mineral updated successfuly',
-        delete: 'Mineral deleted successfuly',
+      book: {
+        insert: 'Book created successfully',
+        get: 'Book fetched successfuly ',
+        update: 'Book updated successfuly',
+        delete: 'Book deleted successfuly',
       }
     },
   

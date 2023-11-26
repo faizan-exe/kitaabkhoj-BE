@@ -1,12 +1,12 @@
 
 import { Router } from 'express'
 
-import mineral from './mineral'
+import book from './book'
 
 const router = Router()
 
 
-router.use('/mineral', mineral);
+router.use('/book', book);
 
 
 export default router

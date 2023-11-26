@@ -2,7 +2,7 @@ import { DataTypes, Model, Optional } from 'sequelize'
 import sequelizeConnection from '../config/config';
 
 
-interface MineralAttributes {
+interface BookAttributes {
     id: number
     name: string
     price: number
@@ -12,11 +12,11 @@ interface MineralAttributes {
     deletedAt?: Date
 }
 
-export interface MineralInput extends Optional<MineralAttributes, 'id'> { }
+export interface BookInput extends Optional<BookAttributes, 'id'> { }
 
-export interface MineralOuput extends Required<MineralAttributes> { }
+export interface BookOuput extends Required<BookAttributes> { }
 
-class Mineral extends Model<MineralAttributes, MineralInput> implements MineralAttributes {
+class Book extends Model<BookAttributes, BookInput> implements BookAttributes {
 
     public id!: number
     public name: string
@@ -30,7 +30,7 @@ class Mineral extends Model<MineralAttributes, MineralInput> implements MineralA
     public readonly deletedAt!: Date
 }
 
-Mineral.init(
+Book.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -54,4 +54,4 @@ Mineral.init(
 )
 
 
-export default Mineral;
+export default Book;

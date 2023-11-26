@@ -1,47 +1,47 @@
 /**
- *        @file MineralService.ts
+ *        @file BookService.ts
  *  @repository 000-a-3100_api_boilerplate
  * @application 000-a-3100_api_boilerplate
- *     @summary MineralService Class
- * @description Define Functions that perform CRUD operations on Mineral
- *   @functions - createMineral()
- *              - getMineral()
- *              - getMineralID()
- *              - deleteMineral()
- *              - updateMineral()
+ *     @summary BookService Class
+ * @description Define Functions that perform CRUD operations on Book
+ *   @functions - createBook()
+ *              - getBook()
+ *              - getBookID()
+ *              - deleteBook()
+ *              - updateBook()
  */
 import messages from '../../../constants'
-import { Mineral } from '../../../Models'
+import { Book } from '../../../Models'
 import { Op } from 'sequelize'
 import { getPagination, setPagination } from '../../../helpers'
 
 
-export class MineralService {
+export class BookService {
   expReq?: any
   expRes?: any
 
-  public async createMineral(args: any): Promise<any> {
+  public async createBook(args: any): Promise<any> {
     try {
-      const MineralObj = await Mineral.findOne({
+      const BookObj = await Book.findOne({
         where: {
           name: args.name,
         }
       })
-      if (MineralObj) {
+      if (BookObj) {
         return {
           success: false,
           data: {
             message: messages.errors.recordExist,
-            result: MineralObj,
+            result: BookObj,
           },
         }
       }
-      const mineral = await Mineral.create({ ...args })
+      const book = await Book.create({ ...args })
       return {
         success: true,
         data: {
-          message: messages.success.mineral.insert,
-          result: mineral,
+          message: messages.success.book.insert,
+          result: book,
         },
       }
     } catch (error) {
@@ -49,10 +49,10 @@ export class MineralService {
     }
   }
 
-  public async getMineral(args: any, filter : any): Promise<any> {
+  public async getBook(args: any, filter : any): Promise<any> {
     try {
       const { per_page, current_page, offset } = setPagination(args.query)
-      const total_item = await Mineral.count({
+      const total_item = await Book.count({
       });
       const paginationObj = getPagination(per_page, total_item, current_page)
 
@@ -62,19 +62,19 @@ export class MineralService {
       }),
       ...(filter?.name && filter.name.length > 1 && { name: { [Op.iLike]: `%${filter.name}%` } })
     }
-      const mineral = await Mineral.findAll({
+      const book = await Book.findAll({
         where : whereCondition,
         limit: per_page,
         offset: offset,
         order: [['id', 'DESC']]
       })
-      // return Mineral
+      // return Book
       return {
         success: true,
         pagination: paginationObj,
         data: {
-          message: messages.success.mineral.get,
-          result: mineral,
+          message: messages.success.book.get,
+          result: book,
         },
       }
     } catch (error) {
@@ -82,9 +82,9 @@ export class MineralService {
     }
   }
 
-  public async viewMineral(id: string): Promise<any> {
+  public async viewBook(id: string): Promise<any> {
     try {
-      const mineral = await Mineral.findOne({
+      const book = await Book.findOne({
         where: {
           id
         },
@@ -92,8 +92,8 @@ export class MineralService {
       return {
         success: true,
         data: {
-          message: messages.success.mineral.get,
-          result: mineral,
+          message: messages.success.book.get,
+          result: book,
         },
       }
     } catch (error) {
@@ -101,9 +101,9 @@ export class MineralService {
     }
   }
 
-  public async updateMineral(id: string, args: any): Promise<any> {
+  public async updateBook(id: string, args: any): Promise<any> {
     try {
-      const mineral = await Mineral.update(args, {
+      const book = await Book.update(args, {
         where: {
           id
         },
@@ -112,8 +112,8 @@ export class MineralService {
       return {
         success: true,
         data: {
-          message: messages.success.mineral.update,
-          result: mineral,
+          message: messages.success.book.update,
+          result: book,
         },
       }
     } catch (error) {
@@ -121,16 +121,16 @@ export class MineralService {
     }
   }
 
-  public async deleteMineral(id: string): Promise<any> {
+  public async deleteBook(id: string): Promise<any> {
     try {
-      await Mineral.destroy({
+      await Book.destroy({
         where: {
           id
         },
       })
       return {
         success: true,
-        data: { message: messages.success.mineral.delete },
+        data: { message: messages.success.book.delete },
       }
     } catch (error) {
       return { success: false, data: { message: error.detail || error.message }, status: error.status }
@@ -138,4 +138,4 @@ export class MineralService {
   }
  
 }
-export default MineralService
+export default BookService

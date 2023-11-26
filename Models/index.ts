@@ -1,6 +1,6 @@
 // import User from './User'
-import Mineral from './Mineral'
+import Book from './Book'
 
 
 
-export {Mineral}
+export {Book}
