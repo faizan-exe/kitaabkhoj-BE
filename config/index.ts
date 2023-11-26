@@ -94,11 +94,11 @@ export const bcryptRounds = {
 export const email = {
 	primary: {
 		token: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-		from: 'hassantariq5544@gmail.com'
+		from: 'faizanofficial120@gmail.com'
 	},
 
 	addresses: {
-		support: 'hassantariq5544@gmail.com'
+		support: 'faizanofficial120@gmail.com'
 	}
 };
 
