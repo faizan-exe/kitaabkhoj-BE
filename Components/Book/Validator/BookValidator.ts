@@ -12,41 +12,24 @@ import Joi from 'joi'
 class BookValidator {
   public createBook() {
     return Joi.object({
-      name: Joi.string().required(),
+      title: Joi.string().required(),
+      author: Joi.string().required(),
+      iban: Joi.number().required(),
       price: Joi.number().required(),
-      rooms: Joi.number().required(),
-      is_visible: Joi.boolean().required(),
-      description: Joi.string().required(),
-      guest_capacity: Joi.number().required(),
-      facilities: Joi.array().allow(null).items(
-        Joi.string().allow(null,''),
-        ),
-      attachments: Joi.array().allow(null).items(
-     Joi.string().allow(null,''),
-      ),
-      main_img: Joi.string().required(),
-      is_popular: Joi.boolean().allow(null),
-      ratings: Joi.number().allow(null)
-      
+      published_date: Joi.string().required(),
+      genre_id: Joi.number().required,
+      publisher: Joi.string().required()
     })
   }  
   public editBook() {
     return Joi.object({
-      name: Joi.string().required(),
-      price: Joi.number().required(),
-      rooms: Joi.number().required(),
-      is_visible: Joi.boolean().required(),
-      guest_capacity: Joi.number().required(),
-      description: Joi.string().required(),
-      facilities: Joi.array().allow(null).items(
-        Joi.string().allow(null,''),
-        ),
-      attachments: Joi.array().allow(null).items(
-     Joi.string().allow(null,''),
-      ),
-      main_img: Joi.string().allow(null, ''),
-      is_popular: Joi.boolean().allow(null),
-      ratings: Joi.number().allow(null)
+      title: Joi.string().allow(null),
+      author: Joi.string().allow(null),
+      iban: Joi.number().allow(null),
+      price: Joi.number().allow(null),
+      published_date: Joi.string().allow(null),
+      genre_id: Joi.number().allow(null),
+      publisher: Joi.string().allow(null)
     })
   }
 
