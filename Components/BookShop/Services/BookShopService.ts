@@ -1,47 +1,48 @@
 /**
- *        @file BookService.ts
+ *        @file BookShopService.ts
  *  @repository 000-a-3100_api_boilerplate
  * @application 000-a-3100_api_boilerplate
- *     @summary BookService Class
- * @description Define Functions that perform CRUD operations on Book
- *   @functions - createBook()
- *              - getBook()
- *              - getBookID()
- *              - deleteBook()
- *              - updateBook()
+ *     @summary BookShopService Class
+ * @description Define Functions that perform CRUD operations on BookShop
+ *   @functions - createBookShop()
+ *              - getBookShop()
+ *              - getBookShopID()
+ *              - deleteBookShop()
+ *              - updateBookShop()
  */
 import messages from '../../../constants'
-import { Book } from '../../../Models'
+import { BookShop } from '../../../Models'
 import { Op } from 'sequelize'
 import { getPagination, setPagination } from '../../../helpers'
 
 
-export class BookService {
+export class BookShopService {
   expReq?: any
   expRes?: any
 
-  public async createBook(args: any): Promise<any> {
+  public async createBookShop(args: any): Promise<any> {
     try {
-      const BookObj = await Book.findOne({
+      const BookShopObj = await BookShop.findOne({
         where: {
-          title: args.title,
+          name: args.name,
         }
       })
-      if (BookObj) {
+      if (BookShopObj) {
         return {
           success: false,
           data: {
             message: messages.errors.recordExist,
-            result: BookObj,
+            result: BookShopObj,
           },
         }
       }
-      const book = await Book.create({ ...args })
+      const bookshop = await BookShop.create({ ...args })
+    
       return {
         success: true,
         data: {
-          message: messages.success.book.insert,
-          result: book,
+          message: messages.success.bookshop.insert,
+          result: bookshop,
         },
       }
     } catch (error) {
@@ -49,10 +50,10 @@ export class BookService {
     }
   }
 
-  public async getBook(args: any, filter : any): Promise<any> {
+  public async getBookShop(args: any, filter : any): Promise<any> {
     try {
       const { per_page, current_page, offset } = setPagination(args.query)
-      const total_item = await Book.count({
+      const total_item = await BookShop.count({
       });
       const paginationObj = getPagination(per_page, total_item, current_page)
 
@@ -62,19 +63,19 @@ export class BookService {
       }),
       ...(filter?.name && filter.name.length > 1 && { name: { [Op.iLike]: `%${filter.name}%` } })
     }
-      const book = await Book.findAll({
+      const bookshop = await BookShop.findAll({
         where : whereCondition,
         limit: per_page,
         offset: offset,
         order: [['id', 'DESC']]
       })
-      // return Book
+      // return BookShop
       return {
         success: true,
         pagination: paginationObj,
         data: {
-          message: messages.success.book.get,
-          result: book,
+          message: messages.success.bookshop.get,
+          result: bookshop,
         },
       }
     } catch (error) {
@@ -82,9 +83,9 @@ export class BookService {
     }
   }
 
-  public async viewBook(id: string): Promise<any> {
+  public async viewBookShop(id: string): Promise<any> {
     try {
-      const book = await Book.findOne({
+      const bookshop = await BookShop.findOne({
         where: {
           id
         },
@@ -92,8 +93,8 @@ export class BookService {
       return {
         success: true,
         data: {
-          message: messages.success.book.get,
-          result: book,
+          message: messages.success.bookshop.get,
+          result: bookshop,
         },
       }
     } catch (error) {
@@ -101,9 +102,9 @@ export class BookService {
     }
   }
 
-  public async updateBook(id: string, args: any): Promise<any> {
+  public async updateBookShop(id: string, args: any): Promise<any> {
     try {
-      const book = await Book.update(args, {
+      const bookshop = await BookShop.update(args, {
         where: {
           id
         },
@@ -112,8 +113,8 @@ export class BookService {
       return {
         success: true,
         data: {
-          message: messages.success.book.update,
-          result: book,
+          message: messages.success.bookshop.update,
+          result: bookshop,
         },
       }
     } catch (error) {
@@ -121,16 +122,16 @@ export class BookService {
     }
   }
 
-  public async deleteBook(id: string): Promise<any> {
+  public async deleteBookShop(id: string): Promise<any> {
     try {
-      await Book.destroy({
+      await BookShop.destroy({
         where: {
           id
         },
       })
       return {
         success: true,
-        data: { message: messages.success.book.delete },
+        data: { message: messages.success.bookshop.delete },
       }
     } catch (error) {
       return { success: false, data: { message: error.detail || error.message }, status: error.status }
@@ -138,4 +139,4 @@ export class BookService {
   }
  
 }
-export default BookService
+export default BookShopService

@@ -4,8 +4,14 @@ import sequelizeConnection from '../config/config';
 
 interface BookAttributes {
     id: number
-    name: string
+    title: string
+    author: string
+    iban: string
     price: number
+    published_date: Date
+    genre_id: number
+    publisher: string
+
 
     createdAt?: Date
     updatedAt?: Date
@@ -19,8 +25,13 @@ export interface BookOuput extends Required<BookAttributes> { }
 class Book extends Model<BookAttributes, BookInput> implements BookAttributes {
 
     public id!: number
-    public name: string
+    public title: string
+    public author: string
+    public iban: string
     public price: number
+    public published_date: Date
+    public genre_id: number
+    public publisher: string
 
     
 
@@ -37,14 +48,32 @@ Book.init(
             primaryKey: true,
             autoIncrement : true
         },
-        name: {
+        title: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
         },
+        author: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        iban: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         price: {
             type: DataTypes.INTEGER,
             allowNull: false,
+        },
+        published_date: {
+            type: DataTypes.DATE
+        },
+        genre_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        publisher: {
+            type: DataTypes.STRING
         },
     },
     {

@@ -9,6 +9,12 @@ export const message = {
         get: 'Book fetched successfuly ',
         update: 'Book updated successfuly',
         delete: 'Book deleted successfuly',
+      },
+      bookshop: {
+        insert: 'Bookshop created successfully',
+        get: 'Bookshop fetched successfuly ',
+        update: 'Bookshop updated successfuly',
+        delete: 'Bookshop deleted successfuly',
       }
     },
   
@@ -22,4 +28,5 @@ export const message = {
       autherizationFailed: 'Autherization Failed',
     }
   }
+
   
