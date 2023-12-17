@@ -11,7 +11,7 @@
  *              - updateShopKeeper()
  */
 import message from '../../../constants'
-import { ShopKeeper } from '../../../Models'
+import { ShopKeeper, BookShop } from '../../../Models'
 import Auth from '../../../utility/auth'
 import { Op } from 'sequelize'
 import * as config from '../../../config'
@@ -136,6 +136,7 @@ public async viewShopKeeper(id: string): Promise<any> {
       where: {
         id
       },
+      include: [{model: BookShop}]
     })
     return {
       success: true,
@@ -168,6 +169,8 @@ public async update(id: string, args: any): Promise<any> {
     return { success: false, data: { message: error.detail || error.message }, status: error.status }
   }
 }
+
+
 
 
 public async delete(id: string): Promise<any> {

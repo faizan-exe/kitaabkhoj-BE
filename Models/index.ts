@@ -7,6 +7,10 @@ import BookShopCatalog from './BookShopCatalog'
 BookShop.belongsTo(ShopKeeper, {
      foreignKey: 'shopkeeper_id'
 });
+ShopKeeper.hasOne(BookShop, {
+    foreignKey: 'shopkeeper_id'
+});
+
 
 Book.belongsToMany(BookShop, { through: BookShopCatalog, foreignKey: 'book_id', targetKey: 'id' })
 BookShop.belongsToMany(Book, { through: BookShopCatalog, foreignKey: 'bookshop_id', targetKey: 'id' })
