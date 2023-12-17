@@ -9,7 +9,7 @@
 import Joi from 'joi'
 
 
-class AdminValidator {
+class ShopKeeperValidator {
   public login() {
     return Joi.object({
       email: Joi.string().required(),
@@ -18,9 +18,9 @@ class AdminValidator {
   public create() {
     return Joi.object({
       email: Joi.string().required(),
-      username: Joi.string().required(),
+      name: Joi.string().required(),
       age: Joi.number().allow(null,0),
     })
   }  
 }
-export default new AdminValidator()
+export default new ShopKeeperValidator()

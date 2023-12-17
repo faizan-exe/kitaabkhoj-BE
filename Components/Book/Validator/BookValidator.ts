@@ -17,7 +17,7 @@ class BookValidator {
       iban: Joi.number().required(),
       price: Joi.number().required(),
       published_date: Joi.string().required(),
-      genre_id: Joi.number().required,
+      genre_id: Joi.number().required(),
       publisher: Joi.string().required()
     })
   }  

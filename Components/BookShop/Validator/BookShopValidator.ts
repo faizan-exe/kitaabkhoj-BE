@@ -13,7 +13,9 @@ class BookShopValidator {
   public createBookShop() {
     return Joi.object({
       location: Joi.string().required(),
-      name: Joi.number().required(),
+      name: Joi.string().required(),
+      shopkeeper_id: Joi.number().required(),
+      catalog_id: Joi.number().required()
       
     })
   }  
