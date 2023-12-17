@@ -23,6 +23,12 @@ export const message = {
         update: 'Shopkeeper updated successfuly',
         delete: 'Shopkeeper deleted successfuly',
       },
+      bookShopCatalog: {
+        insert: 'Bookshop created successfully',
+        get: 'Bookshop fetched successfuly ',
+        update: 'Bookshop updated successfuly',
+        delete: 'Bookshop deleted successfuly',
+      }
     },
   
     errors: {

@@ -7,7 +7,6 @@ interface BookAttributes {
     title: string
     author: string
     iban: string
-    price: number
     published_date: Date
     genre_id: number
     publisher: string
@@ -28,7 +27,6 @@ class Book extends Model<BookAttributes, BookInput> implements BookAttributes {
     public title: string
     public author: string
     public iban: string
-    public price: number
     public published_date: Date
     public genre_id: number
     public publisher: string
@@ -59,10 +57,6 @@ Book.init(
         },
         iban: {
             type: DataTypes.STRING,
-            allowNull: false,
-        },
-        price: {
-            type: DataTypes.INTEGER,
             allowNull: false,
         },
         published_date: {

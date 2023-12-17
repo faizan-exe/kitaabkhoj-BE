@@ -11,6 +11,10 @@ interface BookShopCatalogAttributes {
     id: number
     book_id: number
     bookshop_id: number
+    in_stock: number
+    sold_copies: number
+    unit_price: number
+    used: boolean
 }
 
 export interface BookShopCatalogInput extends Optional<BookShopCatalogAttributes, 'id'> { }
@@ -22,6 +26,14 @@ class BookShopCatalog extends Model<BookShopCatalogAttributes, BookShopCatalogIn
     public id!: number
     public book_id: number
     public bookshop_id: number
+    public in_stock: number
+    public sold_copies: number
+    public unit_price: number
+    public used: boolean
+
+    public readonly createdAt!: Date
+    public readonly updatedAt!: Date
+    public readonly deletedAt!: Date
 
 }
 
@@ -49,6 +61,27 @@ BookShopCatalog.init(
             allowNull: false
 
         },
+
+        in_stock: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+
+        sold_copies: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+
+        unit_price: {
+            type: DataTypes.FLOAT,
+            allowNull: false
+        },
+
+        used: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        }
+
        
     },
     {
