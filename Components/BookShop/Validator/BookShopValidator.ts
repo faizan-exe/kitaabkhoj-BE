@@ -15,7 +15,6 @@ class BookShopValidator {
       location: Joi.string().required(),
       name: Joi.string().required(),
       shopkeeper_id: Joi.number().required(),
-      catalog_id: Joi.number().required()
       
     })
   }  
@@ -23,6 +22,7 @@ class BookShopValidator {
     return Joi.object({
       location: Joi.string().allow(null, ''),
       name: Joi.number().allow(null, ''),
+      shopkeeper_id: Joi.number().allow(null, ''),
     })
   }
 

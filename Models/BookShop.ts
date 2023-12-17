@@ -1,13 +1,16 @@
+
+
+
+
 import { DataTypes, Model, Optional } from 'sequelize'
 import sequelizeConnection from '../config/config';
-
+import ShopKeeper from './ShopKeeper';
 
 interface BookShopAttributes {
     id: number
     location: string
     name: string
     shopkeeper_id: number
-    catalog_id: number
    
     createdAt?: Date
     updatedAt?: Date
@@ -24,7 +27,7 @@ class BookShop extends Model<BookShopAttributes, BookShopInput> implements BookS
     public location: string
     public name: string
     public shopkeeper_id: number 
-    public catalog_id: number   
+  
 
     // timestamps!
     public readonly createdAt!: Date
@@ -52,10 +55,10 @@ BookShop.init(
         shopkeeper_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-        },
-        catalog_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
+            references: {
+                model: ShopKeeper, 
+                key: 'id'
+        }
         },
        
     },
