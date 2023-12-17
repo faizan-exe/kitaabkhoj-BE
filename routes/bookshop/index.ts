@@ -27,6 +27,13 @@ router.post(
   wrapper(BookShopController.create),
 )
 
+router.post(
+  '/upload_img',
+
+  wrapper(BookShopController.create),
+  
+)
+
 router.get(
   '/',
   wrapper(BookShopController.index),
@@ -51,5 +58,7 @@ router.put(
   },
   wrapper(BookShopController.update),
 )
+
+
 
 export default router
