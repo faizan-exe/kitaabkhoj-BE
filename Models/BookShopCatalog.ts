@@ -45,7 +45,7 @@ BookShopCatalog.init(
             autoIncrement : true
         },
         book_id: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.INTEGER,
             references: {
                 model: Book,
                 key: 'id'
@@ -53,7 +53,7 @@ BookShopCatalog.init(
             allowNull: false
         },
         bookshop_id: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.INTEGER,
             references: {
                 model: BookShop,
                 key: 'id'

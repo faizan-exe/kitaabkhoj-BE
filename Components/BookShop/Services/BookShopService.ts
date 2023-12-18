@@ -11,7 +11,7 @@
  *              - updateBookShop()
  */
 import messages from '../../../constants'
-import { BookShop, ShopKeeper, BookShopCatalog, Book, BookShopFinance } from '../../../Models'
+import { BookShop, ShopKeeper, Book, BookShopFinance } from '../../../Models'
 import { Op } from 'sequelize'
 import { getPagination, setPagination } from '../../../helpers'
 
@@ -68,15 +68,8 @@ export class BookShopService {
         limit: per_page,
         offset: offset,
         order: [['id', 'DESC']],
-        include: [{model: ShopKeeper}, {
-          model: BookShopCatalog,
-          include: [
-            {
-              model: Book,
-            }
-          ]
-        },
-      {model: BookShopFinance}]
+        include: [{model: ShopKeeper}, 
+      {model: BookShopFinance}, {model: Book}]
       })
       // return BookShop
       return {
@@ -98,15 +91,8 @@ export class BookShopService {
         where: {
           id
         },
-        include: [{model: ShopKeeper}, {
-          model: BookShopCatalog,
-          include: [
-            {
-              model: Book,
-            }
-          ]
-        },
-      {model: BookShopFinance}]
+        include: [{model: ShopKeeper}, 
+          {model: BookShopFinance}, {model: Book}]
       })
       return {
         success: true,

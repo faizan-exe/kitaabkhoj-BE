@@ -21,21 +21,21 @@ export class BookShopCatalogService {
   expRes?: any
 
   public async createBookShopCatalog(args: any): Promise<any> {
-    try {
-      const bookShopCatalogObj = await BookShopCatalog.findOne({
-        where: {
-          id: args.id,
-        }
-      })
-      if (bookShopCatalogObj) {
-        return {
-          success: false,
-          data: {
-            message: messages.errors.recordExist,
-            result: bookShopCatalogObj,
-          },
-        }
-      }
+    // try {
+      // const bookShopCatalogObj = await BookShopCatalog.findOne({
+      //   where: {
+      //     id: args.id,
+      //   }
+      // })
+      // if (bookShopCatalogObj) {
+      //   return {
+      //     success: false,
+      //     data: {
+      //       message: messages.errors.recordExist,
+      //       result: bookShopCatalogObj,
+      //     },
+      //   }
+      // }
       const bookShopCatalog = await BookShopCatalog.create({ ...args })
     
       return {
@@ -45,9 +45,10 @@ export class BookShopCatalogService {
           result: bookShopCatalog,
         },
       }
-    } catch (error) {
-      return { success: false, data: { message: error.detail || error } }
-    }
+    // }
+    //  catch (error) {
+    //   return { success: false, data: { message: error.detail || error } }
+    // }
   }
 
   public async createBookMedia(args: any): Promise<any> {
