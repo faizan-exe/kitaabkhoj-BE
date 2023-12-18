@@ -37,6 +37,14 @@ export class BookShopCatalogController {
     return response.created(await bookShopCatalogService.createBookShopCatalog({ ...payload }))
   }
 
+  public static async createBookMedia(req: any, res: Response) {
+    const payload: CreateBookShopCatalogDTO = req.body
+    const bookShopCatalogService: BookShopCatalogService = new BookShopCatalogService()
+    const response: ResponseWrapper = new ResponseWrapper(res)
+
+    return response.created(await bookShopCatalogService.createBookMedia({ ...payload }))
+  }
+
   public static async show(req: any, res: Response) {
     const id: string = req.params.id
     const bookShopCatalogService: BookShopCatalogService = new BookShopCatalogService()

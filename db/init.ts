@@ -1,9 +1,12 @@
 require('dotenv').config()
-import { Book } from "../Models/"
+import { Book} from "../Models/"
 import {BookShop} from "../Models/"
 import {ShopKeeper} from "../Models/"
 import {BookShopCatalog} from '../Models/'
 import {BookShopFinance} from '../Models/'
+import {Customer} from '../Models'
+import {CustomerFinance} from '../Models/'
+import {Order} from '../Models/'
 
 // import {  } from "../Models"
 // import { Category } from "../Models"
@@ -17,6 +20,10 @@ const dbInit = () =>
     BookShop.sync({ alter:isDev || isTest }),
     ShopKeeper.sync({alter: isDev || isTest }),
     BookShopCatalog.sync({alter: isDev || isTest }),
-    BookShopFinance.sync({alter: isDev || isTest })
+    BookShopFinance.sync({alter: isDev || isTest }),
+    Customer.sync({alter: isDev || isTest }),
+    CustomerFinance.sync({alter: isDev || isTest }),
+    Order.sync({alter: isDev || isTest })
+
   ])
 export default dbInit

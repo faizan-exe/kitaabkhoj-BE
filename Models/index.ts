@@ -5,6 +5,9 @@ import ShopKeeper from './ShopKeeper'
 import BookShopCatalog from './BookShopCatalog'
 import BookShopFinance from './BookShopFinance';
 import BookMedia from './BookMedia';
+import Customer from './Customer';
+import CustomerFinance from './CustomerFinance';
+import Order from './Order'
 
 BookShop.belongsTo(ShopKeeper, {
      foreignKey: 'shopkeeper_id'
@@ -21,6 +24,14 @@ BookShop.hasOne(BookShopFinance, {
 });
 
 
+CustomerFinance.belongsTo(Customer, {
+  foreignKey: 'customer_id'
+})
+
+
+Customer.hasOne(CustomerFinance, {
+  foreignKey: 'customer_id'
+})
 
 
 Book.belongsToMany(BookShop, { through: BookShopCatalog, foreignKey: 'book_id', targetKey: 'id' })
@@ -28,19 +39,45 @@ BookShop.belongsToMany(Book, { through: BookShopCatalog, foreignKey: 'bookshop_i
 
 
 //the code below is sus
-BookMedia.belongsTo(BookShop, {
-    foreignKey: 'bookshop_id'
-  });
-  BookShop.hasMany(BookMedia, {
-    foreignKey: 'bookshop_id'
-  });
+BookMedia.belongsTo(BookShopCatalog, {
+  foreignKey: 'bookshopcatalog_id'
+});
+
+BookShopCatalog.hasOne(BookMedia, {
+  foreignKey: 'bookshopcatalog_id'
+});
+
+
+Order.belongsTo(BookShopCatalog, {
+  foreignKey: 'bookshopcatalog_id'
+});
+BookShopCatalog.hasMany(Order, {
+  foreignKey: 'bookshopcatalog_id'
+});
+
+
+Order.belongsTo(Customer, {
+  foreignKey: 'customer_id'
+});
+Customer.hasMany(Order, {
+  foreignKey: 'customer_id'
+});
+
+
+
+// BookMedia.belongsTo(BookShop, {
+//     foreignKey: 'bookshop_id'
+//   });
+//   BookShop.hasMany(BookMedia, {
+//     foreignKey: 'bookshop_id'
+//   });
   
-  BookMedia.belongsTo(Book, {
-    foreignKey: 'book_id'
-  });
-  Book.hasMany(BookMedia, {
-    foreignKey: 'book_id'
-  });
+//   BookMedia.belongsTo(Book, {
+//     foreignKey: 'book_id'
+//   });
+//   Book.hasMany(BookMedia, {
+//     foreignKey: 'book_id'
+//   });
 
 
-export {Book, BookShop, ShopKeeper, BookShopCatalog, BookShopFinance, BookMedia}
+export {Book, BookShop, ShopKeeper, BookShopCatalog, BookShopFinance, BookMedia, Customer, CustomerFinance, Order}

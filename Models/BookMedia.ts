@@ -4,13 +4,11 @@
 
 import { DataTypes, Model, Optional } from 'sequelize'
 import sequelizeConnection from '../config/config';
-import BookShop from './BookShop';
-import Book from './Book';
+import BookShopCatalog from './BookShopCatalog';
 
 interface BookMediaAttributes {
     id: number
-    book_id: number
-    bookshop_id: number
+    bookshopcatalog_id: number
     img_url: string
 
 }
@@ -22,8 +20,7 @@ export interface BookMediaOuput extends Required<BookMediaAttributes> { }
 class BookMedia extends Model<BookMediaAttributes, BookMediaInput> implements BookMediaAttributes {
 
     public id!: number
-    public book_id: number
-    public bookshop_id: number
+    public bookshopcatalog_id: number
     public img_url: string
   
 
@@ -40,25 +37,17 @@ BookMedia.init(
             primaryKey: true,
             autoIncrement : true
         },
-        book_id: {
-            type: DataTypes.INTEGER,
+        bookshopcatalog_id: {
+            type: DataTypes.NUMBER,
             allowNull: false,
             references: {
-                model: Book, 
-                key: 'id'
-        }
-        },
-        bookshop_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: BookShop, 
+                model: BookShopCatalog, 
                 key: 'id'
         }
         },
         img_url: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
        
     },

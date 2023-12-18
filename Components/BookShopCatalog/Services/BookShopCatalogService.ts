@@ -11,7 +11,7 @@
  *              - updateBookShopCatalog()
  */
 import messages from '../../../constants'
-import { BookShopCatalog } from '../../../Models'
+import { BookShopCatalog, BookMedia } from '../../../Models'
 import { Op } from 'sequelize'
 import { getPagination, setPagination } from '../../../helpers'
 
@@ -50,6 +50,36 @@ export class BookShopCatalogService {
     }
   }
 
+  public async createBookMedia(args: any): Promise<any> {
+    try {
+      const bookMedia = await BookMedia.findOne({
+        where: {
+          bookshopcatalog_id: args.bookshopcatalog_id,
+        }
+      })
+      if (bookMedia) {
+        return {
+          success: false,
+          data: {
+            message: messages.errors.recordExist,
+            result: bookMedia,
+          },
+        }
+      }
+      const bookMediaObj = await BookMedia.create({ ...args })
+    
+      return {
+        success: true,
+        data: {
+          message: messages.success.bookShopCatalog.insert,
+          result: bookMediaObj,
+        },
+      }
+    } catch (error) {
+      return { success: false, data: { message: error.detail || error } }
+    }
+  }
+
   public async getBookShopCatalog(args: any, filter : any): Promise<any> {
     try {
       const { per_page, current_page, offset } = setPagination(args.query)
@@ -68,6 +98,7 @@ export class BookShopCatalogService {
         limit: per_page,
         offset: offset,
         order: [['id', 'DESC']],
+
       })
       // return BookShopCatalog
       return {
@@ -89,6 +120,7 @@ export class BookShopCatalogService {
         where: {
           id
         },
+        include: [{model: BookMedia}]
        
       })
       return {

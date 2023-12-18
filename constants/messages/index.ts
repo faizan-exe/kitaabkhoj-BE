@@ -34,7 +34,21 @@ export const message = {
         get: 'Bookshop finance fetched successfuly ',
         update: 'Bookshop finance updated successfuly',
         delete: 'Bookshop finance deleted successfuly',
-      }
+      },
+      customer: {
+        login: 'Customer login successfully',
+        create : 'Customer created successfully',
+        get: 'Customer fetched successfuly ',
+        update: 'Customer updated successfuly',
+        delete: 'Customer deleted successfuly',
+      },
+
+      order: {
+        insert: 'Order created successfully',
+        get: 'Order fetched successfuly ',
+        update: 'Order updated successfuly',
+        delete: 'Order deleted successfuly',
+      },
     },
   
     errors: {

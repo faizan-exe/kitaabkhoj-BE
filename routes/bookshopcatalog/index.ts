@@ -27,6 +27,14 @@ router.post(
   wrapper(BookShopCatalogController.create),
 )
 
+router.post(
+  '/book-media/',
+  (req, res, next) => {
+    Schema.handle(req, res, next, BookShopCatalogValidator.createBookMedia())
+  },
+  wrapper(BookShopCatalogController.createBookMedia),
+)
+
 router.get(
   '/',
   wrapper(BookShopCatalogController.index),

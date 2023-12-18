@@ -20,6 +20,14 @@ class BookShopCatalogValidator {
         used: Joi.boolean().allow(null, '')
       
     })
+  }
+  
+  public createBookMedia() {
+    return Joi.object({
+        bookshopcatalog_id: Joi.number().required(),
+        img_url: Joi.string().required()
+      
+    })
   }  
   public editBookShopCatalog() {
     return Joi.object({

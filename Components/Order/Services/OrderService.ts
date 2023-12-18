@@ -1,48 +1,48 @@
 /**
- *        @file BookShopService.ts
+ *        @file OrderService.ts
  *  @repository 000-a-3100_api_boilerplate
  * @application 000-a-3100_api_boilerplate
- *     @summary BookShopService Class
- * @description Define Functions that perform CRUD operations on BookShop
- *   @functions - createBookShop()
- *              - getBookShop()
- *              - getBookShopID()
- *              - deleteBookShop()
- *              - updateBookShop()
+ *     @summary OrderService Class
+ * @description Define Functions that perform CRUD operations on Order
+ *   @functions - createOrder()
+ *              - getOrder()
+ *              - getOrderID()
+ *              - deleteOrder()
+ *              - updateOrder()
  */
 import messages from '../../../constants'
-import { BookShop, ShopKeeper, BookShopCatalog, Book } from '../../../Models'
+import { Order, ShopKeeper, BookShopCatalog, Book, BookShop} from '../../../Models'
 import { Op } from 'sequelize'
 import { getPagination, setPagination } from '../../../helpers'
 
 
-export class BookShopService {
+export class OrderService {
   expReq?: any
   expRes?: any
 
-  public async createBookShop(args: any): Promise<any> {
+  public async createOrder(args: any): Promise<any> {
     try {
-      const BookShopObj = await BookShop.findOne({
+      const orderObj = await Order.findOne({
         where: {
-          name: args.name,
+          id: args.id,
         }
       })
-      if (BookShopObj) {
+      if (orderObj) {
         return {
           success: false,
           data: {
             message: messages.errors.recordExist,
-            result: BookShopObj,
+            result: orderObj,
           },
         }
       }
-      const bookshop = await BookShop.create({ ...args })
+      const order = await Order.create({ ...args })
     
       return {
         success: true,
         data: {
-          message: messages.success.bookshop.insert,
-          result: bookshop,
+          message: messages.success.order.insert,
+          result: order,
         },
       }
     } catch (error) {
@@ -50,10 +50,10 @@ export class BookShopService {
     }
   }
 
-  public async getBookShop(args: any, filter : any): Promise<any> {
+  public async getOrder(args: any, filter : any): Promise<any> {
     try {
       const { per_page, current_page, offset } = setPagination(args.query)
-      const total_item = await BookShop.count({
+      const total_item = await Order.count({
       });
       const paginationObj = getPagination(per_page, total_item, current_page)
 
@@ -63,27 +63,20 @@ export class BookShopService {
       }),
       ...(filter?.name && filter.name.length > 1 && { name: { [Op.iLike]: `%${filter.name}%` } })
     }
-      const bookshop = await BookShop.findAll({
+      const order = await Order.findAll({
         where : whereCondition,
         limit: per_page,
         offset: offset,
         order: [['id', 'DESC']],
-        include: [{model: ShopKeeper}, {
-          model: BookShopCatalog,
-          include: [
-            {
-              model: Book,
-            }
-          ]
-        }]
+
       })
-      // return BookShop
+      // return Order
       return {
         success: true,
         pagination: paginationObj,
         data: {
-          message: messages.success.bookshop.get,
-          result: bookshop,
+          message: messages.success.order.get,
+          result: order,
         },
       }
     } catch (error) {
@@ -91,26 +84,28 @@ export class BookShopService {
     }
   }
 
-  public async viewBookShop(id: string): Promise<any> {
+  public async viewOrder(id: string): Promise<any> {
     try {
-      const bookshop = await BookShop.findOne({
+      const order = await Order.findOne({
         where: {
           id
         },
-        include: [{model: ShopKeeper}, {
-          model: BookShopCatalog,
-          include: [
-            {
-              model: Book,
-            }
-          ]
-        }]
+        include: [{model: ShopKeeper}, {model: BookShopCatalog, include: [
+          {
+            model: Book,
+          },
+          {
+            model: BookShop,
+          }
+        ]}]
+      
+       
       })
       return {
         success: true,
         data: {
-          message: messages.success.bookshop.get,
-          result: bookshop,
+          message: messages.success.order.get,
+          result: order,
         },
       }
     } catch (error) {
@@ -118,9 +113,9 @@ export class BookShopService {
     }
   }
 
-  public async updateBookShop(id: string, args: any): Promise<any> {
+  public async updateOrder(id: string, args: any): Promise<any> {
     try {
-      const bookshop = await BookShop.update(args, {
+      const order = await Order.update(args, {
         where: {
           id
         },
@@ -129,8 +124,8 @@ export class BookShopService {
       return {
         success: true,
         data: {
-          message: messages.success.bookshop.update,
-          result: bookshop,
+          message: messages.success.order.update,
+          result: order,
         },
       }
     } catch (error) {
@@ -138,16 +133,16 @@ export class BookShopService {
     }
   }
 
-  public async deleteBookShop(id: string): Promise<any> {
+  public async deleteOrder(id: string): Promise<any> {
     try {
-      await BookShop.destroy({
+      await Order.destroy({
         where: {
           id
         },
       })
       return {
         success: true,
-        data: { message: messages.success.bookshop.delete },
+        data: { message: messages.success.order.delete },
       }
     } catch (error) {
       return { success: false, data: { message: error.detail || error.message }, status: error.status }
@@ -155,4 +150,4 @@ export class BookShopService {
   }
  
 }
-export default BookShopService
+export default OrderService
