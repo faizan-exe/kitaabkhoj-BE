@@ -11,7 +11,7 @@
  *              - updateBookShop()
  */
 import messages from '../../../constants'
-import { BookShop, ShopKeeper, BookShopCatalog, Book } from '../../../Models'
+import { BookShop, ShopKeeper, BookShopCatalog, Book, BookShopFinance } from '../../../Models'
 import { Op } from 'sequelize'
 import { getPagination, setPagination } from '../../../helpers'
 
@@ -75,7 +75,8 @@ export class BookShopService {
               model: Book,
             }
           ]
-        }]
+        },
+      {model: BookShopFinance}]
       })
       // return BookShop
       return {
@@ -104,7 +105,8 @@ export class BookShopService {
               model: Book,
             }
           ]
-        }]
+        },
+      {model: BookShopFinance}]
       })
       return {
         success: true,

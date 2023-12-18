@@ -115,6 +115,7 @@ public async get(filter : any): Promise<any> {
     const shopkeeper = await ShopKeeper.findAll({
       where : whereCondition,
       order: [['id', 'ASC']],
+      include: [{model: BookShop}]
     })
 
     // return Skill
