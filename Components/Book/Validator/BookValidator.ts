@@ -14,9 +14,11 @@ class BookValidator {
     return Joi.object({
       title: Joi.string().required(),
       author: Joi.string().required(),
-      iban: Joi.number().required(),
+      iban: Joi.string().required(),
       published_date: Joi.string().required(),
-      genre_id: Joi.number().required(),
+      genres: Joi.array().allow(null).items(
+        Joi.string().allow(null,''),
+        ),
       publisher: Joi.string().required()
     })
   }  

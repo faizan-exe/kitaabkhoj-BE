@@ -8,7 +8,7 @@ interface BookAttributes {
     author: string
     iban: string
     published_date: Date
-    genre_id: number
+    genres: [string]
     publisher: string
 
 
@@ -28,7 +28,7 @@ class Book extends Model<BookAttributes, BookInput> implements BookAttributes {
     public author: string
     public iban: string
     public published_date: Date
-    public genre_id: number
+    public genres: [string]
     public publisher: string
 
     
@@ -62,9 +62,9 @@ Book.init(
         published_date: {
             type: DataTypes.DATE
         },
-        genre_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
+        genres: {
+            type: DataTypes.JSON,
+            allowNull: true,
         },
         publisher: {
             type: DataTypes.STRING
