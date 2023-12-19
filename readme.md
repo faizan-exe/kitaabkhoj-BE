@@ -1,5 +1,0 @@
-# Api docs
-
-### routes
-
-POST /
