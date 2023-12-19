@@ -55,12 +55,18 @@ export class BookService {
       const total_item = await Book.count({
       });
       const paginationObj = getPagination(per_page, total_item, current_page)
-
-      let whereCondition ={
-      ...(filter?.is_visible &&{
-        is_visible:filter?.is_visible,
-      }),
-      ...(filter?.name && filter.name.length > 1 && { name: { [Op.iLike]: `%${filter.name}%` } })
+      let whereCondition = {};
+      
+      if (filter?.searchQuery){
+      whereCondition = {
+        [Op.or]: [
+          { title: { [Op.iLike]: `%${filter?.searchQuery}%` } },
+          { author: { [Op.iLike]: `%${filter?.searchQuery}%` } },
+          { iban: { [Op.iLike]: `%${filter?.searchQuery}%` } },
+          { publisher: { [Op.iLike]: `%${filter?.searchQuery}%` } },
+      
+        ],
+      };
     }
       const book = await Book.findAll({
         where : whereCondition,
@@ -68,6 +74,10 @@ export class BookService {
         offset: offset,
         order: [['id', 'DESC']]
       })
+
+
+
+      
       // return Book
       return {
         success: true,
