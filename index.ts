@@ -14,6 +14,8 @@ const app = express();
 const port = process.env.PORT || 3000; // Port to listen on
 
 
+
+// await dbInit();
 app.use(express.json()); // Add this middleware to parse JSON request bodies
 app.use('/uploads', express.static('uploads'));
 app.use(cors());

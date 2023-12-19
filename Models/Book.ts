@@ -1,91 +1,80 @@
-import { DataTypes, Model, Optional, Sequelize } from "sequelize";
-import sequelizeConnection from "../config/config";
+import { DataTypes, Model, Optional } from 'sequelize'
+import sequelizeConnection from '../config/config';
+
 
 interface BookAttributes {
-  id: number;
-  title: string;
-  author: string;
-  iban: string;
-  published_date: Date;
-  genre: string[];
-  publisher: string;
+    id: number
+    title: string
+    author: string
+    iban: string
+    published_date: Date
+    genre_id: number
+    publisher: string
 
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date;
+
+    createdAt?: Date
+    updatedAt?: Date
+    deletedAt?: Date
 }
 
-export interface BookInput extends Optional<BookAttributes, "id"> {}
+export interface BookInput extends Optional<BookAttributes, 'id'> { }
 
-export interface BookOuput extends Required<BookAttributes> {}
+export interface BookOuput extends Required<BookAttributes> { }
 
 class Book extends Model<BookAttributes, BookInput> implements BookAttributes {
-  public id!: number;
-  public title: string;
-  public author: string;
-  public iban: string;
-  public published_date: Date;
-  public publisher: string;
 
-  // timestamps!
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-  public readonly deletedAt!: Date;
-  // Convert genre string to array when accessed
-  public get genre():any {
-    const rawValue:any = this.getDataValue("genre");
-    return rawValue ? rawValue.split(",") : [];
-  }
+    public id!: number
+    public title: string
+    public author: string
+    public iban: string
+    public published_date: Date
+    public genre_id: number
+    public publisher: string
 
-  // Set genre as a comma-separated string when assigned
-  public set genre(value:any) {
-    this.setDataValue("genre", value.join(","));
-  }
+    
+
+    // timestamps!
+    public readonly createdAt!: Date
+    public readonly updatedAt!: Date
+    public readonly deletedAt!: Date
 }
 
 Book.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement : true
+        },
+        title: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true
+        },
+        author: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        iban: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        published_date: {
+            type: DataTypes.DATE
+        },
+        genre_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        publisher: {
+            type: DataTypes.STRING
+        },
     },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
+    {
+        sequelize: sequelizeConnection,
+        paranoid: true,
     },
-    author: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    iban: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    published_date: {
-      type: DataTypes.DATE,
-      defaultValue: Sequelize.fn("now"),
-    },
-    genre: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      get() {
-        const rawValue:any = this.getDataValue("genre");
-        return rawValue ? rawValue.split(",") : [];
-      },
-      set(value:any) {
-        this.setDataValue("genre", value.join(","));
-      },
-    },
-    publisher: {
-      type: DataTypes.STRING,
-    },
-  },
-  {
-    sequelize: sequelizeConnection,
-    paranoid: true,
-  }
-);
+)
+
 
 export default Book;
