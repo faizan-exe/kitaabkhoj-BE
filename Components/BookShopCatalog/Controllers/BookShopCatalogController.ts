@@ -14,59 +14,80 @@
  *     @returns Express JSON Response
  */
 
-import { Response } from 'express'
+import { Response } from "express";
 // import { CUserAuthInfoRequest } from '../../../db_pool/helper'
-import { ResponseWrapper } from '../../../helpers/response_wrapper'
-import BookShopCatalogService from '../Services/BookShopCatalogService' 
-import { CreateBookShopCatalogDTO, UpdateBookShopCatalogDTO } from '../Request/BookShopCatalog.dto'
+import { ResponseWrapper } from "../../../helpers/response_wrapper";
+import BookShopCatalogService from "../Services/BookShopCatalogService";
+import {
+  CreateBookShopCatalogDTO,
+  UpdateBookShopCatalogDTO,
+} from "../Request/BookShopCatalog.dto";
 
 export class BookShopCatalogController {
   public static async index(req: any, res: Response) {
-    const bookShopCatalogService: BookShopCatalogService = new BookShopCatalogService()
-    const filter : any = req.query
-    const response: ResponseWrapper = new ResponseWrapper(res)
-    return response.ok(await bookShopCatalogService.getBookShopCatalog(req,filter))
+    const bookShopCatalogService: BookShopCatalogService =
+      new BookShopCatalogService();
+    const filter: any = req.query;
+    const response: ResponseWrapper = new ResponseWrapper(res);
+    return response.ok(
+      await bookShopCatalogService.getBookShopCatalog(req, filter)
+    );
   }
 
   //create new BookShopCatalog async func
   public static async create(req: any, res: Response) {
-    const payload: CreateBookShopCatalogDTO = req.body
-    const bookShopCatalogService: BookShopCatalogService = new BookShopCatalogService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
+    const payload: CreateBookShopCatalogDTO = req.body;
+    const bookShopCatalogService: BookShopCatalogService =
+      new BookShopCatalogService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
 
-    return response.created(await bookShopCatalogService.createBookShopCatalog({ ...payload }))
+    return response.created(
+      await bookShopCatalogService.createBookShopCatalog({ ...payload })
+    );
   }
 
   public static async createBookMedia(req: any, res: Response) {
-    const payload: CreateBookShopCatalogDTO = req.body
-    const bookShopCatalogService: BookShopCatalogService = new BookShopCatalogService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
+    const payload: CreateBookShopCatalogDTO = req.body;
+    const bookShopCatalogService: BookShopCatalogService =
+      new BookShopCatalogService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
 
-    return response.created(await bookShopCatalogService.createBookMedia({ ...payload }))
+    return response.created(
+      await bookShopCatalogService.createBookMedia({ ...payload })
+    );
   }
 
   public static async show(req: any, res: Response) {
-    const id: string = req.params.id
-    const bookShopCatalogService: BookShopCatalogService = new BookShopCatalogService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
+    const bookshop_id: string = req.params.bookshop_id;
+    const bookShopCatalogService: BookShopCatalogService =
+      new BookShopCatalogService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
 
-    return response.ok(await bookShopCatalogService.viewBookShopCatalog(id))
+    return response.ok(
+      await bookShopCatalogService.viewBookShopCatalog(bookshop_id)
+    );
   }
   //Update async func
   public static async update(req: any, res: Response) {
-    const id: string = req.params.id
-    const payload: UpdateBookShopCatalogDTO = req.body
-    const bookShopCatalogService: BookShopCatalogService = new BookShopCatalogService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
-    return response.created(await bookShopCatalogService.updateBookShopCatalog(id, { ...payload }))
+    const id: string = req.params.id;
+    const payload: UpdateBookShopCatalogDTO = req.body;
+    const bookShopCatalogService: BookShopCatalogService =
+      new BookShopCatalogService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
+    return response.created(
+      await bookShopCatalogService.updateBookShopCatalog(id, { ...payload })
+    );
   }
-  
+
   //Delete async func
   public static async destroy(req: any, res: Response) {
-    const id: string = req.params.id
-    const bookShopCatalogService: BookShopCatalogService = new BookShopCatalogService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
+    const id: string = req.params.id;
+    const bookShopCatalogService: BookShopCatalogService =
+      new BookShopCatalogService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
 
-    return response.created(await bookShopCatalogService.deleteBookShopCatalog(id))
+    return response.created(
+      await bookShopCatalogService.deleteBookShopCatalog(id)
+    );
   }
 }

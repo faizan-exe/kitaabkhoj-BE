@@ -10,23 +10,23 @@
  *              - deleteBook()
  *              - updateBook()
  */
-import messages from '../../../constants'
-import { Book } from '../../../Models'
-import { Op } from 'sequelize'
-import { getPagination, setPagination } from '../../../helpers'
-
+import messages from "../../../constants";
+import { Book } from "../../../Models";
+import { Op } from "sequelize";
+import { getPagination, setPagination } from "../../../helpers";
+import { Sequelize } from "sequelize";
 
 export class BookService {
-  expReq?: any
-  expRes?: any
+  expReq?: any;
+  expRes?: any;
 
   public async createBook(args: any): Promise<any> {
     try {
       const BookObj = await Book.findOne({
         where: {
           title: args.title,
-        }
-      })
+        },
+      });
       if (BookObj) {
         return {
           success: false,
@@ -34,40 +34,46 @@ export class BookService {
             message: messages.errors.recordExist,
             result: BookObj,
           },
-        }
+        };
       }
-      const book = await Book.create({ ...args })
+      const book = await Book.create({ ...args });
       return {
         success: true,
         data: {
           message: messages.success.book.insert,
           result: book,
         },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error } }
+      return { success: false, data: { message: error.detail || error } };
     }
   }
 
-  public async getBook(args: any, filter : any): Promise<any> {
+  public async getBook(args: any, filter: any): Promise<any> {
     try {
-      const { per_page, current_page, offset } = setPagination(args.query)
-      const total_item = await Book.count({
-      });
-      const paginationObj = getPagination(per_page, total_item, current_page)
+      const { per_page, current_page, offset } = setPagination(args.query);
+      const total_item = await Book.count({});
+      const paginationObj = getPagination(per_page, total_item, current_page);
+      let whereCondition = {};
 
-      let whereCondition ={
-      ...(filter?.is_visible &&{
-        is_visible:filter?.is_visible,
-      }),
-      ...(filter?.name && filter.name.length > 1 && { name: { [Op.iLike]: `%${filter.name}%` } })
-    }
+      if (filter?.searchQuery) {
+        whereCondition = {
+          [Op.or]: [
+            { title: { [Op.iLike]: `%${filter?.searchQuery}%` } },
+            { author: { [Op.iLike]: `%${filter?.searchQuery}%` } },
+            { iban: { [Op.iLike]: `%${filter?.searchQuery}%` } },
+            { publisher: { [Op.iLike]: `%${filter?.searchQuery}%` } },
+            Sequelize.literal(`genres::text ilike '%${filter?.searchQuery}%'`),
+          ],
+        };
+      }
       const book = await Book.findAll({
-        where : whereCondition,
+        where: whereCondition,
         limit: per_page,
         offset: offset,
-        order: [['id', 'DESC']]
-      })
+        order: [["id", "DESC"]],
+      });
+
       // return Book
       return {
         success: true,
@@ -76,9 +82,13 @@ export class BookService {
           message: messages.success.book.get,
           result: book,
         },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error.message }, status: error.status }
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
     }
   }
 
@@ -86,18 +96,22 @@ export class BookService {
     try {
       const book = await Book.findOne({
         where: {
-          id
+          id,
         },
-      })
+      });
       return {
         success: true,
         data: {
           message: messages.success.book.get,
           result: book,
         },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error.message }, status: error.status }
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
     }
   }
 
@@ -105,19 +119,23 @@ export class BookService {
     try {
       const book = await Book.update(args, {
         where: {
-          id
+          id,
         },
         returning: true,
-      })
+      });
       return {
         success: true,
         data: {
           message: messages.success.book.update,
           result: book,
         },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error.message }, status: error.status }
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
     }
   }
 
@@ -125,17 +143,20 @@ export class BookService {
     try {
       await Book.destroy({
         where: {
-          id
+          id,
         },
-      })
+      });
       return {
         success: true,
         data: { message: messages.success.book.delete },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error.message }, status: error.status }
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
     }
   }
- 
 }
-export default BookService
+export default BookService;

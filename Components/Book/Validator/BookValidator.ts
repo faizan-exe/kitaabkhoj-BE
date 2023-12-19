@@ -6,8 +6,7 @@
  * @description Defines validation structure for Book API requests
  */
 
-import Joi from 'joi'
-
+import Joi from "joi";
 
 class BookValidator {
   public createBook() {
@@ -15,13 +14,11 @@ class BookValidator {
       title: Joi.string().required(),
       author: Joi.string().required(),
       iban: Joi.string().required(),
-      published_date: Joi.string().required(),
-      genres: Joi.array().allow(null).items(
-        Joi.string().allow(null,''),
-        ),
-      publisher: Joi.string().required()
-    })
-  }  
+      published_date: Joi.string().optional(),
+      genres: Joi.array().required().items(Joi.string().allow(null, "")),
+      publisher: Joi.string().required(),
+    });
+  }
   public editBook() {
     return Joi.object({
       title: Joi.string().allow(null),
@@ -29,10 +26,9 @@ class BookValidator {
       iban: Joi.number().allow(null),
       published_date: Joi.string().allow(null),
       genre_id: Joi.number().allow(null),
-      publisher: Joi.string().allow(null)
-    })
+      publisher: Joi.string().allow(null),
+    });
   }
-
 }
 
-export default new BookValidator()
+export default new BookValidator();

@@ -8,56 +8,58 @@
  *              - DELETE '/v1/BookShopCatalog/:id'
  *              - GET '/v1/BookShopCatalog/:id'
  */
-import express from 'express'
+import express from "express";
 
-import Schema from '../../middlewares/schema'
-import BookShopCatalogValidator from '../../Components/BookShopCatalog/Validator/BookShopCatalogValidator'
+import Schema from "../../middlewares/schema";
+import BookShopCatalogValidator from "../../Components/BookShopCatalog/Validator/BookShopCatalogValidator";
 
-import { wrapper } from '../../helpers'
-import { BookShopCatalogController } from '../../Components/BookShopCatalog/Controllers/BookShopCatalogController'
+import { wrapper } from "../../helpers";
+import { BookShopCatalogController } from "../../Components/BookShopCatalog/Controllers/BookShopCatalogController";
 
-const router = express.Router()
-
-
-router.post(
-  '/',
-  (req, res, next) => {
-    Schema.handle(req, res, next, BookShopCatalogValidator.createBookShopCatalog())
-  },
-  wrapper(BookShopCatalogController.create),
-)
+const router = express.Router();
 
 router.post(
-  '/book-media/',
+  "/",
   (req, res, next) => {
-    Schema.handle(req, res, next, BookShopCatalogValidator.createBookMedia())
+    Schema.handle(
+      req,
+      res,
+      next,
+      BookShopCatalogValidator.createBookShopCatalog()
+    );
   },
-  wrapper(BookShopCatalogController.createBookMedia),
-)
+  wrapper(BookShopCatalogController.create)
+);
 
-router.get(
-  '/',
-  wrapper(BookShopCatalogController.index),
-)
+router.post(
+  "/book-media/",
+  (req, res, next) => {
+    Schema.handle(req, res, next, BookShopCatalogValidator.createBookMedia());
+  },
+  wrapper(BookShopCatalogController.createBookMedia)
+);
 
+router.get("/", wrapper(BookShopCatalogController.index));
 
-router.get(
-  '/:id',
-  wrapper(BookShopCatalogController.show),
-)
+router.get("/:bookshop_id", wrapper(BookShopCatalogController.show));
 
 router.delete(
-  '/:id',
+  "/:id",
 
-  wrapper(BookShopCatalogController.destroy),
-)
+  wrapper(BookShopCatalogController.destroy)
+);
 
 router.put(
-  '/:id',
+  "/:id",
   (req, res, next) => {
-    Schema.handle(req, res, next, BookShopCatalogValidator.editBookShopCatalog())
+    Schema.handle(
+      req,
+      res,
+      next,
+      BookShopCatalogValidator.editBookShopCatalog()
+    );
   },
-  wrapper(BookShopCatalogController.update),
-)
+  wrapper(BookShopCatalogController.update)
+);
 
-export default router
+export default router;

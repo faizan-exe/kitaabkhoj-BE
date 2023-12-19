@@ -6,21 +6,20 @@
  * @description Defines validation structure for Category API requests
  */
 
-import Joi from 'joi'
-
+import Joi from "joi";
 
 class ShopKeeperValidator {
   public login() {
     return Joi.object({
       email: Joi.string().required(),
-    })
-  } 
+    });
+  }
   public create() {
     return Joi.object({
       email: Joi.string().required(),
       name: Joi.string().required(),
-      phone_no: Joi.string().required(),
-    })
-  }  
+      phone: Joi.string().required(),
+    });
+  }
 }
-export default new ShopKeeperValidator()
+export default new ShopKeeperValidator();

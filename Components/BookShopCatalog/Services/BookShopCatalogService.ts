@@ -10,24 +10,23 @@
  *              - deleteBookShopCatalog()
  *              - updateBookShopCatalog()
  */
-import messages from '../../../constants'
-import { BookShopCatalog, BookMedia } from '../../../Models'
-import { Op } from 'sequelize'
-import { getPagination, setPagination } from '../../../helpers'
-
+import messages from "../../../constants";
+import { BookShopCatalog, BookMedia, Book, BookShop } from "../../../Models";
+import { Op } from "sequelize";
+import { getPagination, setPagination } from "../../../helpers";
 
 export class BookShopCatalogService {
-  expReq?: any
-  expRes?: any
+  expReq?: any;
+  expRes?: any;
 
   public async createBookShopCatalog(args: any): Promise<any> {
     try {
       const bookShopCatalogObj = await BookShopCatalog.findOne({
         where: {
           bookshop_id: args.bookshop_id,
-          book_id: args.book_id
-        }
-      })
+          book_id: args.book_id,
+        },
+      });
       if (bookShopCatalogObj) {
         return {
           success: false,
@@ -35,20 +34,19 @@ export class BookShopCatalogService {
             message: messages.errors.recordExist,
             result: bookShopCatalogObj,
           },
-        }
+        };
       }
-      const bookShopCatalog = await BookShopCatalog.create({ ...args })
-    
+      const bookShopCatalog = await BookShopCatalog.create({ ...args });
+
       return {
         success: true,
         data: {
           message: messages.success.bookShopCatalog.insert,
           result: bookShopCatalog,
         },
-      }
-    }
-     catch (error) {
-      return { success: false, data: { message: error.detail || error } }
+      };
+    } catch (error) {
+      return { success: false, data: { message: error.detail || error } };
     }
   }
 
@@ -57,8 +55,8 @@ export class BookShopCatalogService {
       const bookMedia = await BookMedia.findOne({
         where: {
           bookshopcatalog_id: args.bookshopcatalog_id,
-        }
-      })
+        },
+      });
       if (bookMedia) {
         return {
           success: false,
@@ -66,43 +64,56 @@ export class BookShopCatalogService {
             message: messages.errors.recordExist,
             result: bookMedia,
           },
-        }
+        };
       }
-      const bookMediaObj = await BookMedia.create({ ...args })
-    
+      const bookMediaObj = await BookMedia.create({ ...args });
+
       return {
         success: true,
         data: {
           message: messages.success.bookShopCatalog.insert,
           result: bookMediaObj,
         },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error } }
+      return { success: false, data: { message: error.detail || error } };
     }
   }
 
-  public async getBookShopCatalog(args: any, filter : any): Promise<any> {
+  public async getBookShopCatalog(args: any, filter: any): Promise<any> {
     try {
-      const { per_page, current_page, offset } = setPagination(args.query)
-      const total_item = await BookShopCatalog.count({
-      });
-      const paginationObj = getPagination(per_page, total_item, current_page)
+      const { per_page, current_page, offset } = setPagination(args.query);
+      const total_item = await BookShopCatalog.count({});
+      const paginationObj = getPagination(per_page, total_item, current_page);
 
-      let whereCondition ={
-      ...(filter?.is_visible &&{
-        is_visible:filter?.is_visible,
-      }),
-      ...(filter?.name && filter.name.length > 1 && { name: { [Op.iLike]: `%${filter.name}%` } })
-    }
+      let whereCondition = {
+        ...(filter?.is_visible && {
+          is_visible: filter?.is_visible,
+        }),
+        ...(filter?.name &&
+          filter.name.length > 1 && {
+            name: { [Op.iLike]: `%${filter.name}%` },
+          }),
+      };
       const bookShopCatalog = await BookShopCatalog.findAll({
-        where : whereCondition,
+        where: whereCondition,
         limit: per_page,
         offset: offset,
-        order: [['id', 'DESC']],
-        include: [{model: BookMedia}]
-
-      })
+        order: [["id", "DESC"]],
+        include: [
+          {
+            model: Book,
+            required: true,
+          },
+          {
+            model: BookShop,
+            required: true,
+          },
+          {
+            model: BookMedia,
+          },
+        ],
+      });
       // return BookShopCatalog
       return {
         success: true,
@@ -111,30 +122,45 @@ export class BookShopCatalogService {
           message: messages.success.bookShopCatalog.get,
           result: bookShopCatalog,
         },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error.message }, status: error.status }
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
     }
   }
 
-  public async viewBookShopCatalog(id: string): Promise<any> {
+  public async viewBookShopCatalog(bookshop_id: string): Promise<any> {
     try {
-      const bookShopCatalog = await BookShopCatalog.findOne({
+      const bookShopCatalog = await BookShopCatalog.findAll({
         where: {
-          id
+          bookshop_id, // Replace this with the desired bookshop_id value
         },
-        include: [{model: BookMedia}]
-       
-      })
+        include: [
+          {
+            model: Book,
+            required: true,
+          },
+          {
+            model: BookMedia,
+          },
+        ],
+      });
       return {
         success: true,
         data: {
           message: messages.success.bookShopCatalog.get,
           result: bookShopCatalog,
         },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error.message }, status: error.status }
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
     }
   }
 
@@ -142,19 +168,23 @@ export class BookShopCatalogService {
     try {
       const bookShopCatalog = await BookShopCatalog.update(args, {
         where: {
-          id
+          id,
         },
         returning: true,
-      })
+      });
       return {
         success: true,
         data: {
           message: messages.success.bookShopCatalog.update,
           result: bookShopCatalog,
         },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error.message }, status: error.status }
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
     }
   }
 
@@ -162,17 +192,21 @@ export class BookShopCatalogService {
     try {
       await BookShopCatalog.destroy({
         where: {
-          id
+          id,
         },
-      })
+        force: true
+      });
       return {
         success: true,
         data: { message: messages.success.bookShopCatalog.delete },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error.message }, status: error.status }
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
     }
   }
- 
 }
-export default BookShopCatalogService
+export default BookShopCatalogService;
