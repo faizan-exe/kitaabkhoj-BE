@@ -14,7 +14,7 @@ import messages from '../../../constants'
 import { Book } from '../../../Models'
 import { Op } from 'sequelize'
 import { getPagination, setPagination } from '../../../helpers'
-
+import { Sequelize } from 'sequelize'
 
 export class BookService {
   expReq?: any
@@ -64,7 +64,7 @@ export class BookService {
           { author: { [Op.iLike]: `%${filter?.searchQuery}%` } },
           { iban: { [Op.iLike]: `%${filter?.searchQuery}%` } },
           { publisher: { [Op.iLike]: `%${filter?.searchQuery}%` } },
-      
+          Sequelize.literal(`genres::text ilike '%${filter?.searchQuery}%'`)
         ],
       };
     }
