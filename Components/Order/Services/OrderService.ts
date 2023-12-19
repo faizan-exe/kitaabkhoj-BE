@@ -11,7 +11,7 @@
  *              - updateOrder()
  */
 import messages from '../../../constants'
-import { Order, Customer} from '../../../Models'
+import { Order, Customer, BookShopCatalog} from '../../../Models'
 import { Op } from 'sequelize'
 import { getPagination, setPagination } from '../../../helpers'
 
@@ -21,23 +21,42 @@ export class OrderService {
   expRes?: any
 
   public async createOrder(args: any): Promise<any> {
-    try {
-      const orderObj = await Order.findOne({
-        where: {
-          bookshopcatalog_id: args.bookshopcatalog_id,
-          customer_id: args.customer_id
-        }
-      })
-      if (orderObj) {
-        return {
-          success: false,
-          data: {
-            message: messages.errors.recordExist,
-            result: orderObj,
-          },
-        }
-      }
-      const order = await Order.create({ ...args })
+    // try {
+    //   const orderObj = await Order.findOne({
+    //     where: {
+    //       bookshopcatalog_id: args.bookshopcatalog_id,
+    //       customer_id: args.customer_id
+    //     }
+    //   })
+    //   if (orderObj) {
+    //     return {
+    //       success: false,
+    //       data: {
+    //         message: messages.errors.recordExist,
+    //         result: orderObj,
+    //       },
+    //     }
+    //   }
+
+     const bookCatalog = await BookShopCatalog.findByPk(args.bookshopcatalog_id);
+     if (!bookCatalog || args.no_of_copies > bookCatalog.in_stock) {
+       return {
+         success: false,
+         data: {
+           message: "Insufficient stock available",
+         },
+       };
+     }
+
+     // Create the order
+     const order = await Order.create({ ...args });
+
+     
+     await BookShopCatalog.update(
+       { in_stock: bookCatalog.in_stock - args.no_of_copies },
+       { where: { id: args.bookshopcatalog_id } }
+     );
+
     
       return {
         success: true,
@@ -46,9 +65,9 @@ export class OrderService {
           result: order,
         },
       }
-    } catch (error) {
-      return { success: false, data: { message: error.detail || error } }
-    }
+    // } catch (error) {
+    //   return { success: false, data: { message: error.detail || error } }
+    // }
   }
 
   public async getOrder(args: any, filter : any): Promise<any> {
