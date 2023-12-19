@@ -19,7 +19,7 @@ class ShopKeeperValidator {
     return Joi.object({
       email: Joi.string().required(),
       name: Joi.string().required(),
-      age: Joi.number().allow(null,0),
+      phone_no: Joi.string().required(),
     })
   }  
 }

@@ -4,7 +4,7 @@ import sequelizeConnection from './../config/config';
 interface ShopKeeperAttributes {
     id: number;
     name: string; 
-    age: number; 
+    phone_no: string; 
     email: string;
 
     createdAt?: Date;
@@ -20,7 +20,7 @@ class ShopKeeper extends Model<ShopKeeperAttributes, ShopKeeperInput> implements
 
     public id!: number;
     public name: string;
-    public age: number;
+    public phone_no: string;
     public email: string;
   
 
@@ -38,11 +38,11 @@ ShopKeeper.init({
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
-    age: {
-        type: DataTypes.INTEGER,
-        allowNull: true
+    phone_no: {
+        type: DataTypes.STRING,
+        allowNull: false
     }, 
     email: {
         type: DataTypes.STRING,
