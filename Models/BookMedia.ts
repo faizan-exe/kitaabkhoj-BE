@@ -38,7 +38,7 @@ BookMedia.init(
             autoIncrement : true
         },
         bookshopcatalog_id: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: BookShopCatalog, 

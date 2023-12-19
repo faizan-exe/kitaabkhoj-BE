@@ -11,7 +11,7 @@
  *              - updateOrder()
  */
 import messages from '../../../constants'
-import { Order, ShopKeeper, BookShopCatalog, Book, BookShop} from '../../../Models'
+import { Order, Customer} from '../../../Models'
 import { Op } from 'sequelize'
 import { getPagination, setPagination } from '../../../helpers'
 
@@ -24,7 +24,8 @@ export class OrderService {
     try {
       const orderObj = await Order.findOne({
         where: {
-          id: args.id,
+          bookshopcatalog_id: args.bookshopcatalog_id,
+          customer_id: args.customer_id
         }
       })
       if (orderObj) {
@@ -68,6 +69,7 @@ export class OrderService {
         limit: per_page,
         offset: offset,
         order: [['id', 'DESC']],
+        include: [{model: Customer}]
 
       })
       // return Order
@@ -90,14 +92,7 @@ export class OrderService {
         where: {
           id
         },
-        include: [{model: ShopKeeper}, {model: BookShopCatalog, include: [
-          {
-            model: Book,
-          },
-          {
-            model: BookShop,
-          }
-        ]}]
+        include: [{model: Customer}]
       
        
       })

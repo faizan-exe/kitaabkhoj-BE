@@ -24,7 +24,7 @@ export class BookShopFinanceService {
     try {
       const bookShopFinanceObj = await BookShopFinance.findOne({
         where: {
-          id: args.id,
+          bookshop_id: args.bookshop_id
         }
       })
       if (bookShopFinanceObj) {

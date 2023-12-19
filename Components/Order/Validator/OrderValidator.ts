@@ -16,8 +16,8 @@ class OrderValidator {
     customer_id:Joi.number().required(),
     delivery_duration: Joi.number().required(),
     delivery_location: Joi.string().required(),
-    no_of_copies: Joi.string().required(),
-    delivered: Joi.string().required(),
+    no_of_copies: Joi.number().required(),
+    delivered: Joi.boolean().required(),
       
     })
   }
@@ -28,8 +28,8 @@ class OrderValidator {
         customer_id:Joi.number().allow(null, ''),
         delivery_duration: Joi.number().allow(null, ''),
         delivery_location: Joi.string().allow(null, ''),
-        no_of_copies: Joi.string().allow(null, ''),
-        delivered: Joi.string().allow(null, '')
+        no_of_copies: Joi.number().allow(null, ''),
+        delivered: Joi.boolean().allow(null, '')
     })
   }
 

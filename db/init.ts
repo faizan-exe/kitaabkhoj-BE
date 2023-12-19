@@ -7,6 +7,7 @@ import {BookShopFinance} from '../Models/'
 import {Customer} from '../Models'
 import {CustomerFinance} from '../Models/'
 import {Order} from '../Models/'
+import {BookMedia} from '../Models/'
 
 // import {  } from "../Models"
 // import { Category } from "../Models"
@@ -23,7 +24,8 @@ const dbInit = () =>
     BookShopFinance.sync({alter: isDev || isTest }),
     Customer.sync({alter: isDev || isTest }),
     CustomerFinance.sync({alter: isDev || isTest }),
-    Order.sync({alter: isDev || isTest })
+    Order.sync({alter: isDev || isTest }),
+    BookMedia.sync({alter: isDev || isTest })
 
   ])
 export default dbInit
