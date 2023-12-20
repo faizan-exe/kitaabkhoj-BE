@@ -15,6 +15,8 @@ import BookValidator from '../../Components/Book/Validator/BookValidator'
 
 import { wrapper } from '../../helpers'
 import { BookController } from '../../Components/Book/Controllers/BookController'
+import { upload } from '../../middlewares/multer'
+
 
 const router = express.Router()
 
@@ -26,6 +28,12 @@ router.post(
   },
   wrapper(BookController.create),
 )
+
+router.post(
+  '/image',upload,
+  wrapper(BookController.uploadImage),
+)
+
 
 router.get(
   '/',

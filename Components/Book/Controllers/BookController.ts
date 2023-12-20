@@ -52,6 +52,14 @@ export class BookController {
     const response: ResponseWrapper = new ResponseWrapper(res)
     return response.created(await bookService.updateBook(id, { ...payload }))
   }
+
+  public static async uploadImage(req: any, res: Response) {
+    const payload = req
+    const bookService: BookService = new BookService()
+    const response: ResponseWrapper = new ResponseWrapper(res)
+
+    return response.ok(await bookService.uploadImage(payload))
+  }
   
   //Delete async func
   public static async destroy(req: any, res: Response) {

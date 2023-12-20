@@ -49,6 +49,10 @@ export const message = {
         update: 'Order updated successfuly',
         delete: 'Order deleted successfuly',
       },
+
+      image: {
+        upload: "Image Uploaded Successfully"
+      }
     },
   
     errors: {

@@ -15,6 +15,7 @@ import { Book } from '../../../Models'
 import { Op } from 'sequelize'
 import { getPagination, setPagination } from '../../../helpers'
 import { Sequelize } from 'sequelize'
+import { uploadSigleFileToS3 } from '../../../helpers/S3Bucket'
 
 export class BookService {
   expReq?: any
@@ -130,6 +131,24 @@ export class BookService {
       return { success: false, data: { message: error.detail || error.message }, status: error.status }
     }
   }
+
+  public async uploadImage(args : any): Promise<any> {
+    try{
+          let image = args.file
+          let type = args.body.type
+            let fileUploadToS3= await uploadSigleFileToS3(image, type)
+            return {
+              success: true,
+              data: {
+                message: messages.success.image.upload,
+                result: fileUploadToS3,
+              },
+            }
+          } catch (error) {
+            return { success: false, data: { message: error.detail || error.message }, status: error.status }
+          }
+      }
+    
 
   public async deleteBook(id: string): Promise<any> {
     try {
