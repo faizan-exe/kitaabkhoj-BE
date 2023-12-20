@@ -22,43 +22,52 @@ import { CreateBookDTO, UpdateBookDTO } from '../Request/book.dto'
 
 export class BookController {
   public static async index(req: any, res: Response) {
-    const bookService: BookService = new BookService()
-    const filter : any = req.query
-    const response: ResponseWrapper = new ResponseWrapper(res)
-    return response.ok(await bookService.getBook(req,filter))
+    const bookService: BookService = new BookService();
+    const filter: any = req.query;
+    const response: ResponseWrapper = new ResponseWrapper(res);
+    return response.ok(await bookService.getBook(req, filter));
   }
 
   //create new Book async func
   public static async create(req: any, res: Response) {
-    const payload: CreateBookDTO = req.body
-    const bookService: BookService = new BookService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
+    const payload: CreateBookDTO = req.body;
+    const bookService: BookService = new BookService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
 
-    return response.created(await bookService.createBook({ ...payload }))
+    return response.created(await bookService.createBook({ ...payload }));
   }
 
-  public static async show(req: any, res: Response) {
-    const id: string = req.params.id
-    const bookService: BookService = new BookService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
+  public static async uploadImage(req: any, res: Response) {
+    const payload = req;
+    const bookService: BookService = new BookService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
 
-    return response.ok(await bookService.viewBook(id))
+    return response.ok(await bookService.uploadImage(payload));
+  }
+
+  
+  public static async show(req: any, res: Response) {
+    const id: string = req.params.id;
+    const bookService: BookService = new BookService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
+
+    return response.ok(await bookService.viewBook(id));
   }
   //Update async func
   public static async update(req: any, res: Response) {
-    const id: string = req.params.id
-    const payload: UpdateBookDTO = req.body
-    const bookService: BookService = new BookService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
-    return response.created(await bookService.updateBook(id, { ...payload }))
+    const id: string = req.params.id;
+    const payload: UpdateBookDTO = req.body;
+    const bookService: BookService = new BookService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
+    return response.created(await bookService.updateBook(id, { ...payload }));
   }
-  
+
   //Delete async func
   public static async destroy(req: any, res: Response) {
-    const id: string = req.params.id
-    const bookService: BookService = new BookService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
+    const id: string = req.params.id;
+    const bookService: BookService = new BookService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
 
-    return response.created(await bookService.deleteBook(id))
+    return response.created(await bookService.deleteBook(id));
   }
 }

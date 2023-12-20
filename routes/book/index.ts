@@ -8,48 +8,43 @@
  *              - DELETE '/v1/book/:id'
  *              - GET '/v1/book/:id'
  */
-import express from 'express'
+import express from "express";
 
-import Schema from '../../middlewares/schema'
-import BookValidator from '../../Components/Book/Validator/BookValidator'
+import { upload } from "../../middlewares/multer";
+import Schema from "../../middlewares/schema";
+import BookValidator from "../../Components/Book/Validator/BookValidator";
 
-import { wrapper } from '../../helpers'
-import { BookController } from '../../Components/Book/Controllers/BookController'
+import { wrapper } from "../../helpers";
+import { BookController } from "../../Components/Book/Controllers/BookController";
 
-const router = express.Router()
-
+const router = express.Router();
 
 router.post(
-  '/',
+  "/",
   (req, res, next) => {
-    Schema.handle(req, res, next, BookValidator.createBook())
+    Schema.handle(req, res, next, BookValidator.createBook());
   },
-  wrapper(BookController.create),
-)
+  wrapper(BookController.create)
+);
 
-router.get(
-  '/',
-  wrapper(BookController.index),
-)
+router.post("/image", upload, wrapper(BookController.uploadImage));
 
+router.get("/", wrapper(BookController.index));
 
-router.get(
-  '/:id',
-  wrapper(BookController.show),
-)
+router.get("/:id", wrapper(BookController.show));
 
 router.delete(
-  '/:id',
+  "/:id",
 
-  wrapper(BookController.destroy),
-)
+  wrapper(BookController.destroy)
+);
 
 router.put(
-  '/:id',
+  "/:id",
   (req, res, next) => {
-    Schema.handle(req, res, next, BookValidator.editBook())
+    Schema.handle(req, res, next, BookValidator.editBook());
   },
-  wrapper(BookController.update),
-)
+  wrapper(BookController.update)
+);
 
-export default router
+export default router;
