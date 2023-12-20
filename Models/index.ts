@@ -38,6 +38,7 @@ Book.belongsToMany(BookShop, { through: BookShopCatalog, foreignKey: 'book_id', 
 BookShop.belongsToMany(Book, { through: BookShopCatalog, foreignKey: 'bookshop_id', targetKey: 'id' })
 
 
+
 //the code below is sus
 BookMedia.belongsTo(BookShopCatalog, {
   foreignKey: 'bookshopcatalog_id'

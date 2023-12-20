@@ -11,10 +11,10 @@
  *              - updateBookShop()
  */
 import messages from '../../../constants'
-import { BookShop, ShopKeeper, Book, BookShopFinance } from '../../../Models'
+import { BookShop, ShopKeeper, Book, BookShopFinance, BookShopCatalog } from '../../../Models'
+import Sequelize from 'sequelize'
 import { Op } from 'sequelize'
 import { getPagination, setPagination } from '../../../helpers'
-import Sequelize from 'sequelize'
 
 
 export class BookShopService {
@@ -51,47 +51,67 @@ export class BookShopService {
     }
   }
 
-  public async getBookShop(args: any, filter : any): Promise<any> {
+  public async getBookShop(args: any, filter: any): Promise<any> {
     try {
-      const { per_page, current_page, offset } = setPagination(args.query)
-      const total_item = await BookShop.count({
-      });
-      const paginationObj = getPagination(per_page, total_item, current_page)
-
-      let whereCondition = {}
-      let bookCondition  = {}
-
-
-      if (filter?.searchQuery){
+      const { per_page, current_page, offset } = setPagination(args.query);
+  
+      let bookCondition = {};
+      if (filter?.searchQuery) {
         bookCondition = {
           [Op.or]: [
             { title: { [Op.iLike]: `%${filter?.searchQuery}%` } },
             { author: { [Op.iLike]: `%${filter?.searchQuery}%` } },
             { iban: { [Op.iLike]: `%${filter?.searchQuery}%` } },
             { publisher: { [Op.iLike]: `%${filter?.searchQuery}%` } },
-            Sequelize.literal(`genres::text ilike '%${filter?.searchQuery}%'`)
+            Sequelize.literal(`"genres"::text ilike '%${filter?.searchQuery}%'`)
           ],
         };
       }
-      const bookshop = await BookShop.findAll({
-        where : whereCondition,
+  
+      // Step 1: Find Book IDs
+      const books = await Book.findAll({
+        where: bookCondition,
+        attributes: ['id']
+      });
+  
+      const bookIds = books.map(book => book.id);
+  
+      // Step 2: Find BookShopCatalog entries
+      const bookShopCatalogs = await BookShopCatalog.findAll({
+        where: {
+          book_id: { [Op.in]: bookIds }
+        },
+        attributes: ['bookshop_id']
+      });
+  
+      const bookShopIds = bookShopCatalogs.map(item => item.bookshop_id);
+  
+      // Step 3: Retrieve BookShops
+      const bookshops = await BookShop.findAll({
+        where: { id: { [Op.in]: bookShopIds } },
+        include: [{model: ShopKeeper}, {model: BookShopFinance}, {model: Book}],
         limit: per_page,
         offset: offset,
-        order: [['id', 'DESC']],
-        include: [{model: ShopKeeper}, 
-      {model: BookShopFinance}, {model: Book, where: bookCondition}]
-      })
-      // return BookShop
+        order: [['id', 'DESC']]
+      });
+  
+      // Counting the total items for pagination
+      const total_item = await BookShop.count({
+        where: { id: { [Op.in]: bookShopIds } }
+      });
+  
+      const paginationObj = getPagination(per_page, total_item, current_page);
+  
       return {
         success: true,
         pagination: paginationObj,
         data: {
           message: messages.success.bookshop.get,
-          result: bookshop,
+          result: bookshops,
         },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error.message }, status: error.status }
+      return { success: false, data: { message: error.detail || error.message }, status: error.status };
     }
   }
 
