@@ -3,6 +3,8 @@ export const message = {
       insert: 'Data inserted',
       get: 'Data fetched',
       update: 'Data updated',
+      shopNotFound: "ShopKeeper email not found",
+      customerNotFound: "customer email not found",
       delete: 'Data deleted',
       book: {
         insert: 'Book created successfully',

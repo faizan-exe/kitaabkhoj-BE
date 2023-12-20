@@ -43,6 +43,8 @@ router.put(
   wrapper(ShopKeeperController.update),
 )
 
+router.get("/access", wrapper(ShopKeeperController.checkShopkeeper));
+
 router.get(
   '/:id',
   wrapper(ShopKeeperController.veiwShopKeeper),

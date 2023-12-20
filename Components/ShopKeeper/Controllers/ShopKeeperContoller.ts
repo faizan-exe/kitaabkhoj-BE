@@ -23,51 +23,55 @@ import { ShopKeeperCreate, ShopKeeperLogin } from '../Request/ShopKeeper.dto'
 export class ShopKeeperController {
   //create new ShopKeeper async func
   public static async login(req: any, res: Response) {
-    const payload: ShopKeeperLogin = req.body
-    const shopkeeperService: ShopKeeperService = new ShopKeeperService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
+    const payload: ShopKeeperLogin = req.body;
+    const shopkeeperService: ShopKeeperService = new ShopKeeperService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
 
-    return response.created(await shopkeeperService.login({ ...payload }))
+    return response.created(await shopkeeperService.login({ ...payload }));
   }
-  
+
   public static async create(req: any, res: Response) {
-    const payload: ShopKeeperCreate = req.body
-    const shopkeeperService: ShopKeeperService = new ShopKeeperService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
+    const payload: ShopKeeperCreate = req.body;
+    const shopkeeperService: ShopKeeperService = new ShopKeeperService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
 
-    return response.created(await shopkeeperService.create({ ...payload }))
+    return response.created(await shopkeeperService.create({ ...payload }));
   }
 
-    public static async index(req: any, res: Response) {
-
-    const shopkeeperService: ShopKeeperService = new ShopKeeperService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
-    let filter : any = req.query
-    return response.ok(await shopkeeperService.get(filter))
+  public static async index(req: any, res: Response) {
+    const shopkeeperService: ShopKeeperService = new ShopKeeperService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
+    let filter: any = req.query;
+    return response.ok(await shopkeeperService.get(filter));
   }
-  
+
   public static async veiwShopKeeper(req: any, res: Response) {
-    const shopkeeperService: ShopKeeperService = new ShopKeeperService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
-    const id: string = req.params.id
-    return response.ok(await shopkeeperService.viewShopKeeper(id))
+    const shopkeeperService: ShopKeeperService = new ShopKeeperService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
+    const id: string = req.params.id;
+    return response.ok(await shopkeeperService.viewShopKeeper(id));
+  }
+
+  public static async checkShopkeeper(req: any, res: Response) {
+    const shopkeeperService: ShopKeeperService = new ShopKeeperService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
+    const email: string = req.query.email;
+    return response.ok(await shopkeeperService.checkShopkeeper(email));
   }
 
   public static async update(req: any, res: Response) {
-    const id: string = req.params.id
-    const payload: any = req.body
-    const shopkeeperService: ShopKeeperService = new ShopKeeperService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
-    return response.created(await shopkeeperService.update(id, { ...payload }))
+    const id: string = req.params.id;
+    const payload: any = req.body;
+    const shopkeeperService: ShopKeeperService = new ShopKeeperService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
+    return response.created(await shopkeeperService.update(id, { ...payload }));
   }
 
   public static async destroy(req: any, res: Response) {
-    const id: string = req.params.id
-    const shopkeeperService: ShopKeeperService = new ShopKeeperService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
+    const id: string = req.params.id;
+    const shopkeeperService: ShopKeeperService = new ShopKeeperService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
 
-    return response.created(await shopkeeperService.delete(id))
+    return response.created(await shopkeeperService.delete(id));
   }
-
-
 }

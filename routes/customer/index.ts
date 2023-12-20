@@ -51,6 +51,8 @@ router.put(
   wrapper(CustomerController.update),
 )
 
+router.get("/access", wrapper(CustomerController.checkCustomer));
+
 router.get(
   '/:id',
   wrapper(CustomerController.veiwCustomer),

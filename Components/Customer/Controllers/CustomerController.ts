@@ -23,59 +23,65 @@ import { CustomerCreate, CustomerLogin } from '../Request/Customer.dto'
 export class CustomerController {
   //create new Customer async func
   public static async login(req: any, res: Response) {
-    const payload: CustomerLogin = req.body
-    const customerService: CustomerService = new CustomerService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
+    const payload: CustomerLogin = req.body;
+    const customerService: CustomerService = new CustomerService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
 
-    return response.created(await customerService.login({ ...payload }))
+    return response.created(await customerService.login({ ...payload }));
   }
-  
-  public static async create(req: any, res: Response) {
-    const payload: CustomerCreate = req.body
-    const customerService: CustomerService = new CustomerService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
 
-    return response.created(await customerService.create({ ...payload }))
+  public static async create(req: any, res: Response) {
+    const payload: CustomerCreate = req.body;
+    const customerService: CustomerService = new CustomerService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
+
+    return response.created(await customerService.create({ ...payload }));
   }
 
   public static async createCustomerFinance(req: any, res: Response) {
-    const payload: CustomerCreate = req.body
-    const customerService: CustomerService = new CustomerService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
+    const payload: CustomerCreate = req.body;
+    const customerService: CustomerService = new CustomerService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
 
-    return response.created(await customerService.createCustomerFinance({ ...payload }))
+    return response.created(
+      await customerService.createCustomerFinance({ ...payload })
+    );
   }
 
-    public static async index(req: any, res: Response) {
-
-    const customerService: CustomerService = new CustomerService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
-    let filter : any = req.query
-    return response.ok(await customerService.get(filter))
+  public static async index(req: any, res: Response) {
+    const customerService: CustomerService = new CustomerService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
+    let filter: any = req.query;
+    return response.ok(await customerService.get(filter));
   }
-  
+
   public static async veiwCustomer(req: any, res: Response) {
-    const customerService: CustomerService = new CustomerService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
-    const id: string = req.params.id
-    return response.ok(await customerService.viewCustomer(id))
+    const customerService: CustomerService = new CustomerService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
+    const id: string = req.params.id;
+    return response.ok(await customerService.viewCustomer(id));
+  }
+
+  public static async checkCustomer(req: any, res: Response) {
+    const customerService: CustomerService = new CustomerService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
+    const email: string = req.query.email;
+    return response.ok(await customerService.checkCustomer(email));
   }
 
   public static async update(req: any, res: Response) {
-    const id: string = req.params.id
-    const payload: any = req.body
-    const customerService: CustomerService = new CustomerService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
-    return response.created(await customerService.update(id, { ...payload }))
+    const id: string = req.params.id;
+    const payload: any = req.body;
+    const customerService: CustomerService = new CustomerService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
+    return response.created(await customerService.update(id, { ...payload }));
   }
 
   public static async destroy(req: any, res: Response) {
-    const id: string = req.params.id
-    const customerService: CustomerService = new CustomerService()
-    const response: ResponseWrapper = new ResponseWrapper(res)
+    const id: string = req.params.id;
+    const customerService: CustomerService = new CustomerService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
 
-    return response.created(await customerService.delete(id))
+    return response.created(await customerService.delete(id));
   }
-
-
 }
