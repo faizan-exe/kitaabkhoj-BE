@@ -6,33 +6,32 @@
  * @description Defines validation structure for Order API requests
  */
 
-import Joi from 'joi'
-
+import Joi from "joi";
 
 class OrderValidator {
   public createOrder() {
     return Joi.object({
-    bookshopcatalog_id: Joi.number().required(),
-    customer_id:Joi.number().required(),
-    delivery_duration: Joi.number().required(),
-    delivery_location: Joi.string().required(),
-    no_of_copies: Joi.number().required(),
-    delivered: Joi.boolean().required(),
-      
-    })
+      bookshopcatalog_id: Joi.number().required(),
+      customer_id: Joi.number().required(),
+      delivery_duration: Joi.number().optional(),
+      bookshop_id: Joi.number().required(),
+      delivery_location: Joi.string().required(),
+      no_of_copies: Joi.number().optional(),
+      delivered: Joi.boolean().optional(),
+      price: Joi.string().required(),
+    });
   }
-  
+
   public editOrder() {
     return Joi.object({
-        bookshopcatalog_id: Joi.number().allow(null, ''),
-        customer_id:Joi.number().allow(null, ''),
-        delivery_duration: Joi.number().allow(null, ''),
-        delivery_location: Joi.string().allow(null, ''),
-        no_of_copies: Joi.number().allow(null, ''),
-        delivered: Joi.boolean().allow(null, '')
-    })
+      bookshopcatalog_id: Joi.number().allow(null, ""),
+      customer_id: Joi.number().allow(null, ""),
+      delivery_duration: Joi.number().allow(null, ""),
+      delivery_location: Joi.string().allow(null, ""),
+      no_of_copies: Joi.number().allow(null, ""),
+      delivered: Joi.boolean().allow(null, ""),
+    });
   }
-
 }
 
-export default new OrderValidator()
+export default new OrderValidator();

@@ -10,87 +10,87 @@
  *              - deleteOrder()
  *              - updateOrder()
  */
-import messages from '../../../constants'
-import { Order, Customer, BookShopCatalog} from '../../../Models'
-import { Op } from 'sequelize'
-import { getPagination, setPagination } from '../../../helpers'
-
+import messages from "../../../constants";
+import { Order, Customer } from "../../../Models";
+import { Op } from "sequelize";
+import { getPagination, setPagination } from "../../../helpers";
 
 export class OrderService {
-  expReq?: any
-  expRes?: any
+  expReq?: any;
+  expRes?: any;
 
   public async createOrder(args: any): Promise<any> {
-    // try {
-    //   const orderObj = await Order.findOne({
-    //     where: {
-    //       bookshopcatalog_id: args.bookshopcatalog_id,
-    //       customer_id: args.customer_id
-    //     }
-    //   })
-    //   if (orderObj) {
-    //     return {
-    //       success: false,
-    //       data: {
-    //         message: messages.errors.recordExist,
-    //         result: orderObj,
-    //       },
-    //     }
-    //   }
+    try {
+      const orderObj = await Order.findOne({
+        where: {
+          bookshopcatalog_id: args.bookshopcatalog_id,
+          customer_id: args.customer_id,
+        },
+      });
+      if (orderObj) {
+        return {
+          success: false,
+          data: {
+            message: messages.errors.recordExist,
+            result: orderObj,
+          },
+        };
+      }
 
-     const bookCatalog = await BookShopCatalog.findByPk(args.bookshopcatalog_id);
-     if (!bookCatalog || args.no_of_copies > bookCatalog.in_stock) {
-       return {
-         success: false,
-         data: {
-           message: "Insufficient stock available",
-         },
-       };
-     }
+      // const bookCatalog = await BookShopCatalog.findByPk(
+      //   args.bookshopcatalog_id
+      // );
+      // if (!bookCatalog || args.no_of_copies > bookCatalog.in_stock) {
+      //   return {
+      //     success: false,
+      //     data: {
+      //       message: "Insufficient stock available",
+      //     },
+      //   };
+      // }
 
-     // Create the order
-     const order = await Order.create({ ...args });
+      // Create the order
+      const order = await Order.create({ ...args });
 
-     
-     await BookShopCatalog.update(
-       { in_stock: bookCatalog.in_stock - args.no_of_copies },
-       { where: { id: args.bookshopcatalog_id } }
-     );
+      // await BookShopCatalog.update(
+      //   { in_stock: bookCatalog.in_stock - args.no_of_copies },
+      //   { where: { id: args.bookshopcatalog_id } }
+      // );
 
-    
       return {
         success: true,
         data: {
           message: messages.success.order.insert,
           result: order,
         },
-      }
-    // } catch (error) {
-    //   return { success: false, data: { message: error.detail || error } }
-    // }
+      };
+    } catch (error) {
+      return { success: false, data: { message: error.detail || error } };
+    }
   }
 
-  public async getOrder(args: any, filter : any): Promise<any> {
+  public async getOrder(args: any, filter: any): Promise<any> {
     try {
-      const { per_page, current_page, offset } = setPagination(args.query)
-      const total_item = await Order.count({
-      });
-      const paginationObj = getPagination(per_page, total_item, current_page)
+      const { per_page, current_page, offset } = setPagination(args.query);
+      const total_item = await Order.count({});
+      const paginationObj = getPagination(per_page, total_item, current_page);
 
-      let whereCondition ={
-      ...(filter?.is_visible &&{
-        is_visible:filter?.is_visible,
-      }),
-      ...(filter?.name && filter.name.length > 1 && { name: { [Op.iLike]: `%${filter.name}%` } })
-    }
+      let whereCondition = {
+        ...(filter?.is_visible && {
+          is_visible: filter?.is_visible,
+        }),
+        ...(filter?.name &&
+          filter.name.length > 1 && {
+            name: { [Op.iLike]: `%${filter.name}%` },
+          }),
+      };
       const order = await Order.findAll({
-        where : whereCondition,
+        where: whereCondition,
         limit: per_page,
         offset: offset,
-        order: [['id', 'DESC']],
-        include: [{model: Customer}]
-
-      })
+        order: [["id", "DESC"]],
+        include: [{ model: Customer }],
+      });
       // return Order
       return {
         success: true,
@@ -99,9 +99,13 @@ export class OrderService {
           message: messages.success.order.get,
           result: order,
         },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error.message }, status: error.status }
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
     }
   }
 
@@ -109,21 +113,71 @@ export class OrderService {
     try {
       const order = await Order.findOne({
         where: {
-          id
+          id,
         },
-        include: [{model: Customer}]
-      
-       
-      })
+        include: [{ model: Customer }],
+      });
       return {
         success: true,
         data: {
           message: messages.success.order.get,
           result: order,
         },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error.message }, status: error.status }
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
+    }
+  }
+
+  public async viewCustomerOrder(id: string): Promise<any> {
+    try {
+      const order = await Order.findOne({
+        where: {
+          id,
+        },
+        include: [{ model: Customer }],
+      });
+      return {
+        success: true,
+        data: {
+          message: messages.success.order.get,
+          result: order,
+        },
+      };
+    } catch (error) {
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
+    }
+  }
+
+  public async viewShopOrder(id: string): Promise<any> {
+    try {
+      const order = await Order.findOne({
+        where: {
+          id,
+        },
+        include: [{ model: Customer }],
+      });
+      return {
+        success: true,
+        data: {
+          message: messages.success.order.get,
+          result: order,
+        },
+      };
+    } catch (error) {
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
     }
   }
 
@@ -131,19 +185,23 @@ export class OrderService {
     try {
       const order = await Order.update(args, {
         where: {
-          id
+          id,
         },
         returning: true,
-      })
+      });
       return {
         success: true,
         data: {
           message: messages.success.order.update,
           result: order,
         },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error.message }, status: error.status }
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
     }
   }
 
@@ -151,17 +209,20 @@ export class OrderService {
     try {
       await Order.destroy({
         where: {
-          id
+          id,
         },
-      })
+      });
       return {
         success: true,
         data: { message: messages.success.order.delete },
-      }
+      };
     } catch (error) {
-      return { success: false, data: { message: error.detail || error.message }, status: error.status }
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
     }
   }
- 
 }
-export default OrderService
+export default OrderService;

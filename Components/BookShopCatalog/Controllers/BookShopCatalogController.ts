@@ -67,6 +67,19 @@ export class BookShopCatalogController {
       await bookShopCatalogService.viewBookShopCatalog(bookshop_id)
     );
   }
+
+  //show details of catalogue item
+  public static async showItem(req: any, res: Response) {
+    const id: string = req.params.id;
+    const bookShopCatalogService: BookShopCatalogService =
+      new BookShopCatalogService();
+    const response: ResponseWrapper = new ResponseWrapper(res);
+
+    return response.ok(
+      await bookShopCatalogService.viewBookShopCatalogItem(id)
+    );
+  }
+
   //Update async func
   public static async update(req: any, res: Response) {
     const id: string = req.params.id;

@@ -164,6 +164,42 @@ export class BookShopCatalogService {
     }
   }
 
+  public async viewBookShopCatalogItem(id: string): Promise<any> {
+    try {
+      const bookShopCatalog = await BookShopCatalog.findAll({
+        where: {
+          id, // Replace this with the desired bookshop_id value
+        },
+        include: [
+          {
+            model: Book,
+            required: true,
+          },
+          {
+            model: BookMedia,
+          },
+          {
+            model: BookShop,
+            required: true
+          }
+        ],
+      });
+      return {
+        success: true,
+        data: {
+          message: messages.success.bookShopCatalog.get,
+          result: bookShopCatalog,
+        },
+      };
+    } catch (error) {
+      return {
+        success: false,
+        data: { message: error.detail || error.message },
+        status: error.status,
+      };
+    }
+  }
+
   public async updateBookShopCatalog(id: string, args: any): Promise<any> {
     try {
       const bookShopCatalog = await BookShopCatalog.update(args, {
@@ -194,7 +230,7 @@ export class BookShopCatalogService {
         where: {
           id,
         },
-        force: true
+        force: true,
       });
       return {
         success: true,

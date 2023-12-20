@@ -43,6 +43,8 @@ router.get("/", wrapper(BookShopCatalogController.index));
 
 router.get("/:bookshop_id", wrapper(BookShopCatalogController.show));
 
+router.get("/item/:id", wrapper(BookShopCatalogController.showItem))
+
 router.delete(
   "/:id",
 
