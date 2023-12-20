@@ -71,6 +71,9 @@ Book.hasMany(BookShopCatalog, { foreignKey: "book_id" });
 BookShopCatalog.belongsTo(BookShop, { foreignKey: "bookshop_id" });
 BookShop.hasMany(BookShopCatalog, { foreignKey: "bookshop_id" });
 
+Order.belongsTo(BookShop, { foreignKey: "bookshop_id" });
+BookShop.hasMany(Order, { foreignKey: "bookshop_id" });
+
 // BookMedia.belongsTo(BookShop, {
 //     foreignKey: 'bookshop_id'
 //   });

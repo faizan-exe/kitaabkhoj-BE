@@ -38,6 +38,11 @@ router.get(
   wrapper(OrderController.show),
 )
 
+router.get("/customer/:id", wrapper(OrderController.showCustomerOrders));
+
+router.get("/shop/:id", wrapper(OrderController.showShopOrders));
+
+
 router.delete(
   '/:id',
 

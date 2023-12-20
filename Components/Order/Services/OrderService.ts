@@ -11,7 +11,7 @@
  *              - updateOrder()
  */
 import messages from "../../../constants";
-import { Order, Customer } from "../../../Models";
+import { Order, Customer, BookShop } from "../../../Models";
 import { Op } from "sequelize";
 import { getPagination, setPagination } from "../../../helpers";
 
@@ -135,17 +135,22 @@ export class OrderService {
 
   public async viewCustomerOrder(id: string): Promise<any> {
     try {
-      const order = await Order.findOne({
-        where: {
-          id,
-        },
-        include: [{ model: Customer }],
+      const orders = await Order.findAll({
+        include: [
+          {
+            model: Customer,
+            where: {
+              id: id, // Filter by the provided customer ID
+            },
+          },
+        ],
       });
+
       return {
         success: true,
         data: {
           message: messages.success.order.get,
-          result: order,
+          result: orders,
         },
       };
     } catch (error) {
@@ -159,17 +164,22 @@ export class OrderService {
 
   public async viewShopOrder(id: string): Promise<any> {
     try {
-      const order = await Order.findOne({
-        where: {
-          id,
-        },
-        include: [{ model: Customer }],
+      const orders = await Order.findAll({
+        include: [
+          {
+            model: BookShop,
+            where: {
+              id: id, // Filter by the provided shop ID
+            },
+          },
+        ],
       });
+
       return {
         success: true,
         data: {
           message: messages.success.order.get,
-          result: order,
+          result: orders,
         },
       };
     } catch (error) {
