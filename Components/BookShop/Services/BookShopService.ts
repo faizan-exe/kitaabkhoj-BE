@@ -14,6 +14,7 @@ import messages from '../../../constants'
 import { BookShop, ShopKeeper, Book, BookShopFinance } from '../../../Models'
 import { Op } from 'sequelize'
 import { getPagination, setPagination } from '../../../helpers'
+import Sequelize from 'sequelize'
 
 
 export class BookShopService {
@@ -57,19 +58,28 @@ export class BookShopService {
       });
       const paginationObj = getPagination(per_page, total_item, current_page)
 
-      let whereCondition ={
-      ...(filter?.is_visible &&{
-        is_visible:filter?.is_visible,
-      }),
-      ...(filter?.name && filter.name.length > 1 && { name: { [Op.iLike]: `%${filter.name}%` } })
-    }
+      let whereCondition = {}
+      let bookCondition  = {}
+
+
+      if (filter?.searchQuery){
+        bookCondition = {
+          [Op.or]: [
+            { title: { [Op.iLike]: `%${filter?.searchQuery}%` } },
+            { author: { [Op.iLike]: `%${filter?.searchQuery}%` } },
+            { iban: { [Op.iLike]: `%${filter?.searchQuery}%` } },
+            { publisher: { [Op.iLike]: `%${filter?.searchQuery}%` } },
+            Sequelize.literal(`genres::text ilike '%${filter?.searchQuery}%'`)
+          ],
+        };
+      }
       const bookshop = await BookShop.findAll({
         where : whereCondition,
         limit: per_page,
         offset: offset,
         order: [['id', 'DESC']],
         include: [{model: ShopKeeper}, 
-      {model: BookShopFinance}, {model: Book}]
+      {model: BookShopFinance}, {model: Book, where: bookCondition}]
       })
       // return BookShop
       return {
