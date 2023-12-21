@@ -142,7 +142,9 @@ export class OrderService {
             where: {
               id: id, // Filter by the provided customer ID
             },
-          },
+          },{
+            model: BookShop
+          }
         ],
       });
 
@@ -172,6 +174,9 @@ export class OrderService {
               id: id, // Filter by the provided shop ID
             },
           },
+          {
+            model: Customer
+          }
         ],
       });
 
